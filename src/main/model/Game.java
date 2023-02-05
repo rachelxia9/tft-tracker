@@ -1,7 +1,6 @@
 package model;
 
 public class Game {
-    private static int defaultID = 0;
     private int id; // game id
     private int rank; // final placement from 1st to 8th
     private String day;  // numerical date from 1-31
@@ -16,7 +15,8 @@ public class Game {
      * if the rank is [1, 4], the winStatus is set to true; otherwise, winStatus is false.
      */
     public Game(int rank, String d, String m, String y, String comp) {
-        id = defaultID++;
+        // int defaultID = 1;
+        // id = defaultID++;
         this.rank = rank;
         this.day = d;
         this.month = m;
@@ -25,7 +25,6 @@ public class Game {
         this.winStatus = (rank <= 4);
 
     }
-
 
     // getter methods
     public int getID() {
@@ -37,7 +36,7 @@ public class Game {
     }
 
     public String getDate() {
-        return month + " " + day + ", " + year;
+        return month + "/" + day + "/" + year;
     }
 
 
@@ -49,15 +48,17 @@ public class Game {
         return winStatus;
     }
 
-    // updating methods
+    // update methods
+
     /*
      * REQUIRES: newRank is [1,8]
      * MODIFIES: this
-     * EFFECTS: replaces current rank with new rank
+     * EFFECTS: replaces current rank with new rank and updates winStatus based on new rank
      */
 
     public int updateRank(int newRank) {
         this.rank = newRank;
+        this.winStatus = (rank <= 4);
         return newRank;
     }
 
@@ -70,5 +71,12 @@ public class Game {
         this.comp = newComp;
         return newComp;
     }
+
+
+    public int setID(int num) {
+        this.id = num;
+        return num;
+    }
+
 
 }
