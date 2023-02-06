@@ -1,19 +1,17 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 
 public class MatchHistory {
-//    private ArrayList<Game> games;
+    //    private ArrayList<Game> games;
     private HashMap<Integer, Game> games;
     private int id = 0;
 
 
     public MatchHistory() {
-    //    games = new ArrayList<>();
-        games = new HashMap<Integer, Game>();
+        //    games = new ArrayList<>();
+        games = new HashMap<>();
     }
 
     // Requires: non-empty list
@@ -34,6 +32,11 @@ public class MatchHistory {
 
     public Game accessGame(int id) {
         games.get(id);
+        { // throws?
+            Game g = null;
+            return g;
+
+        }
 //        for (Game g : games) {
 //            if (id == g.getID()) {
 //                return g;
@@ -42,7 +45,7 @@ public class MatchHistory {
 //        return null;
     }
 
-    public ArrayList<Game> getHistory() {
+    public HashMap<Integer, Game> getHistory() {
         return games;
     }
 
@@ -56,7 +59,7 @@ public class MatchHistory {
         int count;
         count = 0;
 
-        for (Game g : games) {
+        for (Game g : games.values()) {
             if (g.getWinStatus()) {
                 count++;
             }
@@ -69,7 +72,7 @@ public class MatchHistory {
         int count;
         count = 0;
 
-        for (Game g : games) {
+        for (Game g : games.values()) {
             if (g.getRank() == rank) {
                 count++;
             }
@@ -82,7 +85,7 @@ public class MatchHistory {
         int count;
         count = 0;
 
-        for (Game g : games) {
+        for (Game g : games.values()) {
             if (g.getComp().equals(comp)) {
                 count++;
             }
@@ -90,15 +93,15 @@ public class MatchHistory {
         return count;
     }
 
-    // Modifies: this
-    // Effects: maps unique IDS to each game in list of games
-    public void mapIDs() {
-        int defaultID = 0;
-        for (Game g : games) {
-            defaultID = defaultID++;
-            g.setID(defaultID);
-        }
-    }
+//    // Modifies: this
+//    // Effects: maps unique IDS to each game in list of games
+//    public void mapIDs() {
+//        int defaultID = 0;
+//        for (Game g : games.values()) {
+//            defaultID = defaultID++;
+//            g.setID(defaultID);
+//        }
+//    }
 
 }
 

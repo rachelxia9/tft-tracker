@@ -1,6 +1,7 @@
 package ui;
 
 import model.MatchHistory;
+import model.Game;
 
 import java.util.Scanner;
 
@@ -49,25 +50,31 @@ public class TftApp {
     // EFFECTS: display navigation menu to user
     private void displayStart() {
         System.out.println("\n Select an option:");
-        System.out.println("\t open");
-        System.out.println("\t add game");
-        System.out.println("\t remove game");
-        System.out.println("\t see stats");
+        System.out.println("\t input 'open' to open your match history ");
+        System.out.println("\t input 'add' to add a tft game to your current match history");
+        System.out.println("\t input 'remove' to remove a tft game from your match history");
+        System.out.println("\t input 'stats' to view your stats from games in your match history so far");
 
     }
 
     // EFFECTS: processes user action input
     private void runAction(String userAction) {
-        if (userAction.equals("open")) {
-            showMatchHistory();
-        } else if (userAction.equals("add game")) {
-            addTo();
-        } else if (userAction.equals("remove game")) {
-            removeFrom();
-        } else if (userAction.equals("see stats")) {
-            displayStats();
-        } else {
-            System.out.println("input not valid :(");
+        switch (userAction) {
+            case "open":
+                showMatchHistory();
+                break;
+            case "add":
+                addTo();
+                break;
+            case "remove":
+                removeFrom();
+                break;
+            case "stats":
+                displayStats();
+                break;
+            default:
+                System.out.println("input not valid :(");
+                break;
         }
     }
 
