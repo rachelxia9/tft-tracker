@@ -18,5 +18,5 @@
 
 - As a user, I want to be able to create a game and add it to my list of games played
 - As a user, I want to be able to view a list of games played - display date and title 
-- As a user, I want to be able to select a game and view its details
+- As a user, I want to be able to remove games from my list of games played
 - As a user, I want to be able to view stats on games played. For example, the number of times I have placed in each rank, winrate, total count of comps used, etc. 

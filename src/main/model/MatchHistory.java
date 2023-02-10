@@ -1,12 +1,13 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 
 public class MatchHistory {
     //    private ArrayList<Game> games;
     private HashMap<Integer, Game> games;
-    private int id = 0;
+    private static int id = 0;
 
 
     public MatchHistory() {
@@ -31,40 +32,35 @@ public class MatchHistory {
     }
 
     public Game accessGame(int id) {
-        games.get(id);
-        { // throws?
-            Game g = null;
-            return g;
-
-        }
-//        for (Game g : games) {
-//            if (id == g.getID()) {
-//                return g;
-//            }
-//        }
-//        return null;
+        return games.get(id);
     }
 
-    public HashMap<Integer, Game> getHistory() {
-        return games;
-    }
+//    public HashMap<Integer, Game> getHistory() {
+//        return games;
+//    }
 
     // TODO: change to int??
-    public double getNumGames() {
+    public int getNumGames() {
         return games.size();
     }
 
 
-    public double getWinRate() {
+    public int getWinRate() {
         int count;
         count = 0;
+        int numGames = this.getNumGames();
 
-        for (Game g : games.values()) {
-            if (g.getWinStatus()) {
-                count++;
+        if (numGames == 0) {
+            return 0;
+        } else {
+            for (Game g : games.values()) {
+                if (g.getWinStatus()) {
+                    count++;
+                }
             }
+            return count / numGames * 100;
         }
-        return count / this.getNumGames() * 100;
+
 
     }
 
@@ -91,6 +87,21 @@ public class MatchHistory {
             }
         }
         return count;
+    }
+
+    public HashMap<Integer, Game> getGames() {
+        return games;
+    }
+
+    // TODO: make test
+    public int getId(Game g) {
+        for (Entry<Integer, Game> entry : games.entrySet()) {
+            if (entry.getValue() == g) {
+                return entry.getKey();
+            }
+        }
+        return -1;
+
     }
 
 //    // Modifies: this
