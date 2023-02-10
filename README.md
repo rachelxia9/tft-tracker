@@ -1,4 +1,4 @@
-# TFT game tracker
+# TFT Game Tracker App
 
 ## The Project:
 
@@ -19,4 +19,5 @@
 - As a user, I want to be able to create a game and add it to my list of games played
 - As a user, I want to be able to view a list of games played - display date and title 
 - As a user, I want to be able to remove games from my list of games played
-- As a user, I want to be able to view stats on games played. For example, the number of times I have placed in each rank, winrate, total count of comps used, etc. 
+- As a user, I want to be able to edit the games in my match history
+- As a user, I want to be able to view stats on games played. Stats include the number of times I have placed in each rank, total winrate, and the number of times a comp has been used. 

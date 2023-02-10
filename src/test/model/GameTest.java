@@ -103,7 +103,7 @@ class GameTest {
         assertTrue(testplace8th.getWinStatus());
     }
 
-    
+
     @Test
     public void testUpdateComp(){
         testplace4th.updateComp("yuumi");
