@@ -126,15 +126,15 @@ public class TftApp {
         System.out.println("Please enter the placement of the game you want to add:");
         String num = input.nextLine();
         int rank = Integer.parseInt(num);
-        System.out.println("Please enter the day the game was played on:");
-        String d = input.nextLine();
-        System.out.println("Please enter the month the game was played on:");
-        String m = input.nextLine();
-        System.out.println("Please enter the year the game was played on:");
-        String y = input.nextLine();
+//        System.out.println("Please enter the day the game was played on:");
+//        String d = input.nextLine();
+//        System.out.println("Please enter the month the game was played on:");
+//        String m = input.nextLine();
+//        System.out.println("Please enter the year the game was played on:");
+//        String y = input.nextLine();
         System.out.println("Please enter the name of your comp:");
         String comp = input.nextLine();
-        Game game = new Game(rank, d, m, y, comp);
+        Game game = new Game(rank, comp);
         allGames.addGame(game);
 
         System.out.println("Your " + comp + " game has been added.");
@@ -147,7 +147,7 @@ public class TftApp {
             int id = allGames.getID(g);
             int rank = g.getRank();
             String comp = g.getComp();
-            String date = g.getDate();
+            String date = g.getLocalDate();
             System.out.println("Date: " + date + " | Game ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
         }
         displayStart();

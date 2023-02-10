@@ -1,8 +1,12 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Game {
     // private int id; // game id
     private int rank; // final placement from 1st to 8th
+    private String date;
     private String day;  // numerical date from 1-31
     private String month; // numerical month from 1-12
     private String year; // year
@@ -14,13 +18,17 @@ public class Game {
      * EFFECTS: rank of game is set to rank, day/month/year are set to m, d, y and name of game comp is set to comp
      * if the rank is [1, 4], the winStatus is set to true; otherwise, winStatus is false.
      */
-    public Game(int rank, String d, String m, String y, String comp) {
+    public Game(int rank, String comp) {
         // int defaultID = 1;
         // id = defaultID++;
+        LocalDate unformatted  = LocalDate.now();
+        DateTimeFormatter formatdate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.date = unformatted.format(formatdate);
+
         this.rank = rank;
-        this.day = d;
-        this.month = m;
-        this.year = y;
+//        this.day = d;
+//        this.month = m;
+//        this.year = y;
         this.comp = comp;
         this.winStatus = (rank <= 4);
 
@@ -30,14 +38,17 @@ public class Game {
 //    public int getID() {
 //        return id;
 //    }
+    public String getLocalDate() {
+        return date;
+    }
 
     public int getRank() {
         return rank;
     }
 
-    public String getDate() {
-        return month + "/" + day + "/" + year;
-    }
+//    public String getDate() {
+//        return month + "/" + day + "/" + year;
+//    }
 
 
     public String getComp() {
