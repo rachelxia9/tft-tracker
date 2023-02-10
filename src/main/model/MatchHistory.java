@@ -7,12 +7,12 @@ import java.util.Map.Entry;
 public class MatchHistory {
     //    private ArrayList<Game> games;
     private HashMap<Integer, Game> games;
-    private static int id = 0;
+    private int id = 0;
 
 
     public MatchHistory() {
         //    games = new ArrayList<>();
-        games = new HashMap<>();
+        this.games = new HashMap<>();
     }
 
     // Requires: non-empty list
@@ -95,7 +95,7 @@ public class MatchHistory {
         return games;
     }
 
-    // TODO: make test
+    // EFFECTS: returns id key of corresponding game
     public int getID(Game g) {
         for (Entry<Integer, Game> entry : games.entrySet()) {
             if (entry.getValue() == g) {
