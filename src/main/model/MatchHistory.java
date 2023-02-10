@@ -5,19 +5,17 @@ import java.util.Map.Entry;
 
 
 public class MatchHistory {
-    //    private ArrayList<Game> games;
-    private HashMap<Integer, Game> games;
+    private final HashMap<Integer, Game> games;
     private int id = 0;
 
 
     public MatchHistory() {
-        //    games = new ArrayList<>();
         this.games = new HashMap<>();
     }
 
-    // Requires: non-empty list
-    // Modifies: this
-    // Effects: clears all games in match history
+    // REQUIRES: non-empty list
+    // MODIFIES: this
+    // EFFECTS: clears all games in match history
     public void clearHistory() {
         games.clear();
     }
@@ -35,19 +33,13 @@ public class MatchHistory {
         return games.get(id);
     }
 
-//    public HashMap<Integer, Game> getHistory() {
-//        return games;
-//    }
-
-    // TODO: change to int??
     public int getNumGames() {
         return games.size();
     }
 
-
     public int getWinRate() {
         double count = 0;
-        double numGames = (double) this.getNumGames();
+        double numGames = this.getNumGames();
 
         if (numGames == 0) {
             return 0;
@@ -57,10 +49,7 @@ public class MatchHistory {
                     count++;
                 }
             }
-            // return count / numGames * 100;
-            double result = (count / numGames);
-            int percentage = (int) Math.round(count / numGames * 100);
-            return percentage;
+            return (int) Math.round(count / numGames * 100);
         }
 
 
