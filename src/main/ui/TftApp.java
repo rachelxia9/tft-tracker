@@ -183,7 +183,7 @@ public class TftApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: edit game with given id in match history
+    // EFFECTS: edit game with given id in match history with inputs
     private void editMatchHistory() {
         System.out.println("Please enter the id of the game you want to edit:");
         String num = input.nextLine().trim();
