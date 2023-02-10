@@ -7,7 +7,7 @@ public class Game {
     // private int id; // game id
     private int rank; // final placement from 1st to 8th
     private String date;
-//    private String day;  // numerical date from 1-31
+    //    private String day;  // numerical date from 1-31
 //    private String month; // numerical month from 1-12
 //    private String year; // year
     private String comp; // name of comp played
@@ -21,7 +21,7 @@ public class Game {
     public Game(int rank, String comp) {
         // int defaultID = 1;
         // id = defaultID++;
-        LocalDate unformatted  = LocalDate.now();
+        LocalDate unformatted = LocalDate.now();
         DateTimeFormatter formatdate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         this.date = unformatted.format(formatdate);
 
@@ -67,21 +67,19 @@ public class Game {
      * EFFECTS: replaces current rank with new rank and updates winStatus based on new rank
      */
 
-//    public int updateRank(int newRank) {
-//        this.rank = newRank;
-//        this.winStatus = (rank <= 4);
-//        return newRank;
-//    }
+    public void updateRank(int newRank) {
+        this.rank = newRank;
+        this.winStatus = (rank <= 4);
+    }
 
     /*
      * REQUIRES: newComp has a non-zero length
      * MODIFIES: this
      * EFFECTS: replaces current rank with new rank
      */
-//    public String updateComp(String newComp) {
-//        this.comp = newComp;
-//        return newComp;
-//    }
+    public void updateComp(String newComp) {
+        this.comp = newComp;
+    }
 
 
 //    public int setID(int num) {

@@ -46,60 +46,60 @@ class GameTest {
         assertTrue(testplace1st.getWinStatus());
     }
 
-//    @Test
-//    void testUpdateRank(){
-//        testplace4th.updateRank(2);
-//        assertEquals(2, testplace4th.getRank());
-//        assertTrue(testplace4th.getWinStatus());
-//
-//        testplace2nd.updateRank(7);
-//        assertEquals(7, testplace2nd.getRank());
-//        assertFalse(testplace2nd.getWinStatus());
-//
-//        testplace2nd.updateRank(2);
-//        assertEquals(2, testplace2nd.getRank());
-//        assertTrue(testplace2nd.getWinStatus());
-//
-//        testplace8th.updateRank(1);
-//        assertEquals(1, testplace8th.getRank());
-//        assertTrue(testplace8th.getWinStatus());
-//    }
-//
-//    @Test
-//    void testUpdateRankTwice(){
-//        // 4 -> 2 -> 1 true -> true -> true
-//        testplace4th.updateRank(2);
-//        assertEquals(2, testplace4th.getRank());
-//        assertTrue(testplace4th.getWinStatus());
-//        testplace4th.updateRank(1);
-//        assertEquals(1, testplace4th.getRank());
-//        assertTrue(testplace4th.getWinStatus());
-//
-//        // 4 -> 2 -> 8 true -> true -> false
-//        testplace4th.updateRank(2);
-//        assertEquals(2, testplace4th.getRank());
-//        assertTrue(testplace4th.getWinStatus());
-//        testplace4th.updateRank(8);
-//        assertEquals(8, testplace4th.getRank());
-//        assertFalse(testplace4th.getWinStatus());
-//
-//        // 2 -> 7 -> 5 true -> false -> false
-//        assertTrue(testplace2nd.getWinStatus());
-//        testplace2nd.updateRank(7);
-//        assertEquals(7, testplace2nd.getRank());
-//        assertFalse(testplace2nd.getWinStatus());
-//        testplace2nd.updateRank(5);
-//        assertEquals(5, testplace2nd.getRank());
-//        assertFalse(testplace2nd.getWinStatus());
-//
-//
-//        // 8 -> 6 -> 1 false -> false -> true
-//        assertFalse(testplace8th.getWinStatus());
-//        testplace8th.updateRank(6);
-//        assertEquals(6, testplace8th.getRank());
-//        assertFalse(testplace8th.getWinStatus());
-//        testplace8th.updateRank(1);
-//        assertEquals(1, testplace8th.getRank());
-//        assertTrue(testplace8th.getWinStatus());
-//    }
+    @Test
+    void testUpdateRank(){
+        testplace4th.updateRank(2);
+        assertEquals(2, testplace4th.getRank());
+        assertTrue(testplace4th.getWinStatus());
+
+        testplace2nd.updateRank(7);
+        assertEquals(7, testplace2nd.getRank());
+        assertFalse(testplace2nd.getWinStatus());
+
+        testplace2nd.updateRank(2);
+        assertEquals(2, testplace2nd.getRank());
+        assertTrue(testplace2nd.getWinStatus());
+
+        testplace8th.updateRank(1);
+        assertEquals(1, testplace8th.getRank());
+        assertTrue(testplace8th.getWinStatus());
+    }
+
+    @Test
+    void testUpdateRankTwice(){
+        // 4 -> 2 -> 1 true -> true -> true
+        testplace4th.updateRank(2);
+        assertEquals(2, testplace4th.getRank());
+        assertTrue(testplace4th.getWinStatus());
+        testplace4th.updateRank(1);
+        assertEquals(1, testplace4th.getRank());
+        assertTrue(testplace4th.getWinStatus());
+
+        // 4 -> 2 -> 8 true -> true -> false
+        testplace4th.updateRank(2);
+        assertEquals(2, testplace4th.getRank());
+        assertTrue(testplace4th.getWinStatus());
+        testplace4th.updateRank(8);
+        assertEquals(8, testplace4th.getRank());
+        assertFalse(testplace4th.getWinStatus());
+
+        // 2 -> 7 -> 5 true -> false -> false
+        assertTrue(testplace2nd.getWinStatus());
+        testplace2nd.updateRank(7);
+        assertEquals(7, testplace2nd.getRank());
+        assertFalse(testplace2nd.getWinStatus());
+        testplace2nd.updateRank(5);
+        assertEquals(5, testplace2nd.getRank());
+        assertFalse(testplace2nd.getWinStatus());
+
+
+        // 8 -> 6 -> 1 false -> false -> true
+        assertFalse(testplace8th.getWinStatus());
+        testplace8th.updateRank(6);
+        assertEquals(6, testplace8th.getRank());
+        assertFalse(testplace8th.getWinStatus());
+        testplace8th.updateRank(1);
+        assertEquals(1, testplace8th.getRank());
+        assertTrue(testplace8th.getWinStatus());
+    }
 }

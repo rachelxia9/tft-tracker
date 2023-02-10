@@ -13,6 +13,7 @@ public class TftApp {
     private static final String REMOVE_COMMAND = "remove";
     private static final String STATS_COMMAND = "stats";
     private static final String QUIT_COMMAND = "quit";
+    private static final String EDIT_COMMAND = "edit";
 
     private final MatchHistory allGames;
     private final Scanner input;
@@ -39,6 +40,7 @@ public class TftApp {
             if (input.hasNext()) {
                 userAction = input.nextLine();
                 userAction = userAction.toLowerCase();
+                userAction = userAction.trim();
                 runInput(userAction);
             }
         }
@@ -46,9 +48,10 @@ public class TftApp {
     }
 
     // EFFECTS: processes user action input
-    private void runInput(String userAction) {
-        if (userAction.length() > 0) {
-            switch (userAction) {
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    private void runInput(String userIn) {
+        if (userIn.length() > 0) {
+            switch (userIn) {
                 case OPEN_COMMAND:
                     showMatchHistory();
                     break;
@@ -60,6 +63,9 @@ public class TftApp {
                     break;
                 case STATS_COMMAND:
                     displayStats();
+                    break;
+                case EDIT_COMMAND:
+                    editMatchHistory();
                     break;
                 case QUIT_COMMAND:
                     isRunning = false;
@@ -78,6 +84,7 @@ public class TftApp {
             System.out.println("\t Enter '" + OPEN_COMMAND + "' to open your match history ");
             System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
             System.out.println("\t Enter '" + REMOVE_COMMAND + "' to remove a tft game from your match history");
+            System.out.println("\t Enter '" + EDIT_COMMAND + "' to edit a game in your match history");
             System.out.println("\t Enter '" + STATS_COMMAND + "' to view your stats so far");
             System.out.println("\t Enter '" + QUIT_COMMAND + "' to quit the app");
         } else {
@@ -89,7 +96,7 @@ public class TftApp {
     private void displayStats() {
         System.out.println("Your win rate is: " + allGames.getWinRate() + "%");
         if (allGames.getWinRate() >= 50) {
-            System.out.println("Keep up the good work!\n");
+            System.out.println("you're doing great, keep winning!\n");
         } else {
             System.out.println("stop losing!\n");
         }
@@ -125,7 +132,15 @@ public class TftApp {
     private void addTo() {
         System.out.println("Please enter the placement of the game you want to add:");
         String num = input.nextLine();
+        num = num.trim();
         int rank = Integer.parseInt(num);
+
+        if (rank < 1 | rank > 8) {
+            System.out.println("Invalid placement. Enter a number from 1-8.");
+            String num2 = input.nextLine();
+            num2 = num2.trim();
+            rank = Integer.parseInt(num2);
+        }
 //        System.out.println("Please enter the day the game was played on:");
 //        String d = input.nextLine();
 //        System.out.println("Please enter the month the game was played on:");
@@ -134,6 +149,7 @@ public class TftApp {
 //        String y = input.nextLine();
         System.out.println("Please enter the name of your comp:");
         String comp = input.nextLine();
+
         Game game = new Game(rank, comp);
         allGames.addGame(game);
 
@@ -153,5 +169,27 @@ public class TftApp {
         displayStart();
     }
 
-
+    private void editMatchHistory() {
+        System.out.println("Please enter the id of the game you want to edit:");
+        String num = input.nextLine();
+        num = num.trim();
+        int id = Integer.parseInt(num);
+        HashMap<Integer, Game> games = allGames.getGames();
+        for (Game g : games.values()) {
+            if (id == allGames.getID(g)) {
+                System.out.println("Enter new rank: ");
+                String num2 = input.nextLine();
+                num2 = num2.trim();
+                int rank = Integer.parseInt(num2);
+                g.updateRank(rank);
+                System.out.println("Enter new comp name: ");
+                String name = input.nextLine();
+                g.updateComp(name);
+                System.out.println("Game has been edited.");
+            }
+        }
+        displayStart();
+    }
 }
+
+
