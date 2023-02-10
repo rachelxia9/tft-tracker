@@ -93,6 +93,8 @@ public class TftApp {
         }
     }
 
+    // REQUIRES: non-empty input
+    // EFFECTS: display all stats for match history, takes in input
     private void displayStats() {
         System.out.println("Your win rate is: " + allGames.getWinRate() + "%");
         if (allGames.getWinRate() >= 50) {
@@ -120,6 +122,8 @@ public class TftApp {
         displayStart();
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes given game from match history in app
     private void removeFrom() {
         System.out.println("Please enter the id of the game you want to remove:");
         String num = input.nextLine();
@@ -135,11 +139,11 @@ public class TftApp {
                 System.out.println("Game " + id + " was not found :(");
             }
         }
-
-
         displayStart();
     }
 
+    // MODIFIES: this
+    // EFFECTS: add game with inputted info into match history
     private void addTo() {
         System.out.println("Please enter the placement of the game you want to add:");
         String num = input.nextLine().trim();
@@ -165,6 +169,7 @@ public class TftApp {
         displayStart();
     }
 
+    // EFFECTS: display a list of all games played and their info
     private void showMatchHistory() {
         HashMap<Integer, Game> games = allGames.getGames();
         for (Game g : games.values()) {
@@ -177,6 +182,8 @@ public class TftApp {
         displayStart();
     }
 
+    // MODIFIES: this
+    // EFFECTS: edit game with given id in match history
     private void editMatchHistory() {
         System.out.println("Please enter the id of the game you want to edit:");
         String num = input.nextLine().trim();

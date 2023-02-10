@@ -26,29 +26,30 @@ public class Game {
     }
 
     // getter methods
-
+    // EFFECTS: return formatted date
     public String getLocalDate() {
         return date;
     }
 
+    // EFFECTS: return rank
     public int getRank() {
         return rank;
     }
 
+    // EFFECTS: return comp name
     public String getComp() {
         return comp;
     }
 
+    // EFFECTS: return winStatus - true for win, false for loss
     public boolean getWinStatus() {
         return winStatus;
     }
 
 
-
-     // REQUIRES: newRank is [1,8]
-     // MODIFIES: this
-     // EFFECTS: replaces current rank with new rank and updates winStatus based on new rank
-
+    // REQUIRES: newRank is [1,8]
+    // MODIFIES: this
+    // EFFECTS: replaces current rank with new rank and updates winStatus based on new rank
 
     public void updateRank(int newRank) {
         this.rank = newRank;
@@ -62,7 +63,6 @@ public class Game {
     public void updateComp(String newComp) {
         this.comp = newComp;
     }
-
 
 
 }
