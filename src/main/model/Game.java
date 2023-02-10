@@ -46,7 +46,6 @@ public class Game {
         return winStatus;
     }
 
-
     // REQUIRES: newRank is [1,8]
     // MODIFIES: this
     // EFFECTS: replaces current rank with new rank and updates winStatus based on new rank

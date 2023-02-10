@@ -102,4 +102,21 @@ class GameTest {
         assertEquals(1, testplace8th.getRank());
         assertTrue(testplace8th.getWinStatus());
     }
+
+    
+    @Test
+    public void testUpdateComp(){
+        testplace4th.updateComp("yuumi");
+        assertEquals("yuumi", testplace4th.getComp());
+        assertEquals(4, testplace4th.getRank());
+        assertTrue(testplace4th.getWinStatus());
+    }
+
+    @Test
+    public void testUpdateCompSame(){
+        testplace4th.updateComp("brawlers");
+        assertEquals("brawlers", testplace4th.getComp());
+        assertEquals(4, testplace4th.getRank());
+        assertTrue(testplace4th.getWinStatus());
+    }
 }
