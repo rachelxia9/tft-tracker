@@ -46,9 +46,8 @@ public class MatchHistory {
 
 
     public int getWinRate() {
-        int count;
-        count = 0;
-        int numGames = this.getNumGames();
+        double count = 0;
+        double numGames = (double) this.getNumGames();
 
         if (numGames == 0) {
             return 0;
@@ -58,7 +57,10 @@ public class MatchHistory {
                     count++;
                 }
             }
-            return count / numGames * 100;
+            // return count / numGames * 100;
+            double result = (count / numGames);
+            int percentage = (int) Math.round(count / numGames * 100);
+            return percentage;
         }
 
 
@@ -94,7 +96,7 @@ public class MatchHistory {
     }
 
     // TODO: make test
-    public int getId(Game g) {
+    public int getID(Game g) {
         for (Entry<Integer, Game> entry : games.entrySet()) {
             if (entry.getValue() == g) {
                 return entry.getKey();
@@ -103,16 +105,6 @@ public class MatchHistory {
         return -1;
 
     }
-
-//    // Modifies: this
-//    // Effects: maps unique IDS to each game in list of games
-//    public void mapIDs() {
-//        int defaultID = 0;
-//        for (Game g : games.values()) {
-//            defaultID = defaultID++;
-//            g.setID(defaultID);
-//        }
-//    }
 
 }
 

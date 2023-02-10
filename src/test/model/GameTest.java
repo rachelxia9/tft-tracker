@@ -35,15 +35,6 @@ class GameTest {
         assertEquals("yuumi", testplace8th.getComp());
         assertEquals("duelists", testplace1st.getComp());
 
-        testplace4th.setID(1); // generate id in app? based on match history??
-        testplace2nd.setID(2);
-        testplace8th.setID(3);
-        testplace1st.setID(4);
-
-        assertEquals(1, testplace4th.getID());
-        assertEquals(2, testplace2nd.getID());
-        assertEquals(3, testplace8th.getID());
-        assertEquals(4, testplace1st.getID());
 
         assertTrue(testplace4th.getWinStatus());
         assertTrue(testplace2nd.getWinStatus());

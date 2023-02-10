@@ -19,7 +19,6 @@ public class TftApp {
     private boolean isRunning;
 
 
-
     // EFFECTS: Runs TFT app
     public TftApp() {
         this.allGames = new MatchHistory();
@@ -75,11 +74,16 @@ public class TftApp {
     // EFFECTS: display navigation menu to user
     private void displayStart() {
         System.out.println("\n Select an option:");
-        System.out.println("\t Enter " + OPEN_COMMAND + " to open your match history ");
-        System.out.println("\t Enter " + ADD_COMMAND + " to add a tft game to your current match history");
-        System.out.println("\t Enter " + REMOVE_COMMAND + " to remove a tft game from your match history");
-        System.out.println("\t Enter " + STATS_COMMAND + " to view your stats from games in your match history so far");
-        System.out.println("\t Enter " + QUIT_COMMAND + " to quit the app");
+        if (allGames.getNumGames() > 0) {
+            System.out.println("\t Enter '" + OPEN_COMMAND + "' to open your match history ");
+            System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
+            System.out.println("\t Enter '" + REMOVE_COMMAND + "' to remove a tft game from your match history");
+            System.out.println("\t Enter '" + STATS_COMMAND + "' to view your stats so far");
+            System.out.println("\t Enter '" + QUIT_COMMAND + "' to quit the app");
+        } else {
+            System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
+            System.out.println("\t Enter '" + QUIT_COMMAND + "' to quit the app");
+        }
     }
 
     private void displayStats() {
@@ -140,11 +144,13 @@ public class TftApp {
     private void showMatchHistory() {
         HashMap<Integer, Game> games = allGames.getGames();
         for (Game g : games.values()) {
-            int id = g.getID();
+            int id = allGames.getID(g);
             int rank = g.getRank();
             String comp = g.getComp();
-            System.out.println("Game ID: " + id + " rank: " + rank + " comp: " + comp + "\n");
+            String date = g.getDate();
+            System.out.println("Date: " + date + " | Game ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
         }
+        displayStart();
     }
 
 

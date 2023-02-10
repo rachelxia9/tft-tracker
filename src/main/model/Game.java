@@ -1,7 +1,7 @@
 package model;
 
 public class Game {
-    private int id; // game id
+    // private int id; // game id
     private int rank; // final placement from 1st to 8th
     private String day;  // numerical date from 1-31
     private String month; // numerical month from 1-12
@@ -27,9 +27,9 @@ public class Game {
     }
 
     // getter methods
-    public int getID() {
-        return id;
-    }
+//    public int getID() {
+//        return id;
+//    }
 
     public int getRank() {
         return rank;
@@ -73,10 +73,10 @@ public class Game {
     }
 
 
-    public int setID(int num) {
-        this.id = num;
-        return num;
-    }
+//    public int setID(int num) {
+//        this.id = num;
+//        return num;
+//    }
 
 
 }
