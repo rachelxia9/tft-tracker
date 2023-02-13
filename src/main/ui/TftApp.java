@@ -3,6 +3,7 @@ package ui;
 import model.MatchHistory;
 import model.Game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -112,32 +113,42 @@ public class TftApp {
         System.out.println("7th: " + allGames.getGamesByRank(7));
         System.out.println("8th: " + allGames.getGamesByRank(8) + "\n");
 
-        System.out.println("To find a count of a specific comp, enter the name:");
-        String name = input.nextLine();
-        name = name.toLowerCase();
-        name = name.trim();
-        String num = Integer.toString(allGames.getGamesByComp(name));
-        System.out.println(name + " was played " + num + " times");
+        countComps();
 
         displayStart();
+    }
+
+    // EFFECTS: returns counts of all instances of each comp name in match history
+    private void countComps() {
+        HashMap<Integer, Game> games = allGames.getGames();
+        ArrayList<String> comps = new ArrayList<>();
+        for (Game g : games.values()) {
+            String currComp = g.getComp();
+            if (!(comps.contains(currComp))) {
+                comps.add(currComp);
+                int count = allGames.getGamesByComp(currComp);
+                System.out.println(currComp + " has been played " + count + " times.");
+            } else {
+                comps.add(currComp);
+            }
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: removes given game from match history in app
     private void removeFrom() {
         System.out.println("Please enter the id of the game you want to remove:");
-        String num = input.nextLine();
-        num = num.trim();
+        String num = input.nextLine().trim();
         int id = Integer.parseInt(num);
 
         HashMap<Integer, Game> games = allGames.getGames();
-        for (Game g : games.values()) {
-            if (id == allGames.getID(g)) {
-                allGames.removeGame(id);
+        for (int i : games.keySet()) {
+            if (id == i) {
+                allGames.removeGame(i);
                 System.out.println("Game " + id + " has been removed.");
-            } else {
-                System.out.println("Game " + id + " was not found :(");
+                break;
             }
+            System.out.println("Game " + id + " was not found :(");
         }
         displayStart();
     }
