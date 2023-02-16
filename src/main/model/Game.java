@@ -10,8 +10,8 @@ public class Game {
     private boolean winStatus; // whether rank correlates to a win or not
 
     /*
-     * REQUIRES: rank is [1, 8], d is [1, 31], m is [1, 12], y has length 4 and comp has a non-zero length
-     * EFFECTS: rank of game is set to rank, day/month/year are set to m, d, y and name of game comp is set to comp
+     * REQUIRES: rank is [1, 8] and comp has a non-zero length
+     * EFFECTS: constructs a game; rank of game is set to rank, and name of game comp is set to comp
      * if the rank is [1, 4], the winStatus is set to true; otherwise, winStatus is false.
      */
     public Game(int rank, String comp) {

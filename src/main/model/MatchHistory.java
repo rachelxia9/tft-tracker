@@ -8,7 +8,7 @@ public class MatchHistory {
     private final HashMap<Integer, Game> games;
     private int id = 0;
 
-
+    // EFFECTS: constructs match history, a list of games with associated ids
     public MatchHistory() {
         this.games = new HashMap<>();
     }
