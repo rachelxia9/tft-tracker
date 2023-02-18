@@ -143,21 +143,16 @@ public class TftApp {
         String num = input.nextLine().trim();
         try {
             int id = Integer.parseInt(num);
-            for (int i : games.keySet()) {
-                if (id == i) {
-                    allGames.removeGame(i);
-                    System.out.println("Game " + id + " has been removed.");
-                    break;
-                }
-                System.out.println("Game " + id + " was not found :(");
+            if (games.containsKey(id)) {
+                allGames.removeGame(id);
+                System.out.println("Game " + id + " has been removed.");
+            } else {
+                System.out.println("Game not found.");
             }
         } catch (NumberFormatException nfe) {
-
             System.out.println("NumberFormat Exception: invalid input string :(");
         }
-
         displayStart();
-
     }
 
 
@@ -224,22 +219,20 @@ public class TftApp {
     private void editMatchHistory() {
         System.out.println("Please enter the id of the game you want to edit:");
         String num = input.nextLine().trim();
-
         try {
             int id = Integer.parseInt(num);
             HashMap<Integer, Game> games = allGames.getGames();
-            for (Game g : games.values()) {
-                if (id == allGames.getID(g)) {
-                    System.out.println("Enter new rank: ");
-                    String num2 = input.nextLine().trim();
-                    int rank = Integer.parseInt(num2);
-                    g.updateRank(rank);
-                    System.out.println("Enter new comp name: ");
-                    String name = input.nextLine().toLowerCase().trim();
-                    g.updateComp(name);
-                    System.out.println("Game has been edited.");
-                }
+            if (!games.containsKey(id)) {
                 System.out.println("Game not found");
+            } else {
+                Game g = allGames.accessGame(id);
+                System.out.println("Enter new rank: ");
+                int rank = Integer.parseInt(input.nextLine().trim());
+                g.updateRank(rank);
+                System.out.println("Enter new comp name: ");
+                String name = input.nextLine().toLowerCase().trim();
+                g.updateComp(name);
+                System.out.println("Game has been edited.");
             }
         } catch (NumberFormatException nfe) {
             System.out.println("NumberFormat Exception: invalid input string :(");
