@@ -5,14 +5,14 @@ import java.time.format.DateTimeFormatter;
 
 public class Game {
     private int rank; // final placement from 1st to 8th
-    private final String date;
+    private final String date; // local date
     private String comp; // name of comp played
     private boolean winStatus; // whether rank correlates to a win or not
 
     /*
      * REQUIRES: rank is [1, 8] and comp has a non-zero length
      * EFFECTS: constructs a game; rank of game is set to rank, and name of game comp is set to comp
-     * if the rank is [1, 4], the winStatus is set to true; otherwise, winStatus is false.
+     * if the rank is [1, 4], the winStatus is set to true; otherwise, winStatus is false. date is set to local date;
      */
     public Game(int rank, String comp) {
         LocalDate basic = LocalDate.now();
@@ -57,7 +57,7 @@ public class Game {
 
     // REQUIRES: newComp has a non-zero length
     // MODIFIES: this
-    // EFFECTS: replaces current rank with new rank
+    // EFFECTS: replaces current name with new name of comp
 
     public void updateComp(String newComp) {
         this.comp = newComp;

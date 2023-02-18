@@ -156,17 +156,6 @@ public class TftApp {
     }
 
 
-//        HashMap<Integer, Game> games = allGames.getGames();
-//        for (int i : games.keySet()) {
-//            if (id == i) {
-//                allGames.removeGame(i);
-//                System.out.println("Game " + id + " has been removed.");
-//                break;
-//            }
-//            System.out.println("Game " + id + " was not found :(");
-//        }
-
-
     // MODIFIES: this
     // EFFECTS: add game with inputted info into match history
     private void addTo() {
