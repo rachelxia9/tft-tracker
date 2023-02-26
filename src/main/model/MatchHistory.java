@@ -3,6 +3,7 @@ package model;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+// a list of games, each game has a unique id associated with it
 
 public class MatchHistory {
     private final HashMap<Integer, Game> games;

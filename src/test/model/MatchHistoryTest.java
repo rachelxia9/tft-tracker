@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+// tests for match history
 class MatchHistoryTest {
     private MatchHistory test1;
     private Game game1;

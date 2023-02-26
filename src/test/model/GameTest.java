@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+// tests for game
 class GameTest {
     private Game testplace4th;
     private Game testplace2nd;

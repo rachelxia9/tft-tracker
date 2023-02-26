@@ -3,6 +3,8 @@ package model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+// Each individual game with a rank, local date, comp name, and if a win occurred
+
 public class Game {
     private int rank; // final placement from 1st to 8th
     private final String date; // local date
