@@ -21,3 +21,6 @@
 - As a user, I want to be able to remove games from my list of games played
 - ** As a user, I want to be able to edit the games in my match history **
 - ** As a user, I want to be able to view stats on games played. Stats include the number of times I have placed in each rank, total winrate, and the number of times a comp has been used. **
+
+- As a user, when I select quit in the menu, I want to have the option to save my match history to file.
+- As a user, when I start the app, I want to be given the option to load my match history from file.
