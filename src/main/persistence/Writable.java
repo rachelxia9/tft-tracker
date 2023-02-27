@@ -1,0 +1,11 @@
+package persistence;
+
+import org.json.JSONObject;
+// citation: JsonSerializationDemo from EdX, Phase 2
+// JSON interface
+
+public interface Writable {
+
+    // EFFECTS: returns as JSON object
+    JSONObject toJson();
+}

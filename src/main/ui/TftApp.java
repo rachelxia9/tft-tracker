@@ -2,12 +2,17 @@ package ui;
 
 import model.MatchHistory;
 import model.Game;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-// console ui interface of the app, handles input
+// citation: JsonSerializationDemo from EdX, Phase 2
 
+// represents TFT tracker application
 public class TftApp {
 
     private static final String OPEN_COMMAND = "open";
@@ -16,17 +21,24 @@ public class TftApp {
     private static final String STATS_COMMAND = "stats";
     private static final String QUIT_COMMAND = "quit";
     private static final String EDIT_COMMAND = "edit";
+    private static final String SAVE_COMMAND = "save";
+    private static final String LOAD_COMMAND = "load";
 
-    private final MatchHistory allGames;
+    private MatchHistory allGames;
     private final Scanner input;
     private boolean isRunning;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private static final String JSON_STORE = "./data/matchHistory.json";
 
 
-    // EFFECTS: Runs TFT app
-    public TftApp() {
+    // EFFECTS: constructs match history and runs TFT app
+    public TftApp() throws FileNotFoundException {
         this.allGames = new MatchHistory();
         input = new Scanner(System.in);
         isRunning = true;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
         runApp();
     }
@@ -69,6 +81,12 @@ public class TftApp {
                 case EDIT_COMMAND:
                     editMatchHistory();
                     break;
+                case SAVE_COMMAND:
+                    saveHistory();
+                    break;
+                case LOAD_COMMAND:
+                    loadHistory();
+                    break;
                 case QUIT_COMMAND:
                     isRunning = false;
                     break;
@@ -79,20 +97,19 @@ public class TftApp {
         }
     }
 
+
     // EFFECTS: display navigation menu to user
     private void displayStart() {
         System.out.println("\nSelect an option:");
-        if (allGames.getNumGames() > 0) {
-            System.out.println("\t Enter '" + OPEN_COMMAND + "' to open your match history ");
-            System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
-            System.out.println("\t Enter '" + REMOVE_COMMAND + "' to remove a tft game from your match history");
-            System.out.println("\t Enter '" + EDIT_COMMAND + "' to edit a game in your match history");
-            System.out.println("\t Enter '" + STATS_COMMAND + "' to view your stats so far");
-            System.out.println("\t Enter '" + QUIT_COMMAND + "' to quit the app");
-        } else {
-            System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
-            System.out.println("\t Enter '" + QUIT_COMMAND + "' to quit the app");
-        }
+        System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
+        System.out.println("\t Enter '" + OPEN_COMMAND + "' to open your match history");
+        System.out.println("\t Enter '" + REMOVE_COMMAND + "' to remove a tft game from your match history");
+        System.out.println("\t Enter '" + EDIT_COMMAND + "' to edit a game in your match history");
+        System.out.println("\t Enter '" + STATS_COMMAND + "' to view your stats so far");
+        System.out.println("\t Enter '" + SAVE_COMMAND + "' to save match history to file");
+        System.out.println("\t Enter '" + LOAD_COMMAND + "' to load match history from file");
+        System.out.println("\t Enter '" + QUIT_COMMAND + "' to quit the app");
+
     }
 
     // REQUIRES: non-empty input
@@ -229,6 +246,30 @@ public class TftApp {
         }
 
         displayStart();
+    }
+
+
+    // EFFECTS: save match history to file
+    private void saveHistory() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(allGames);
+            jsonWriter.close();
+            System.out.println("Saved match history to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads match history from file
+    private void loadHistory() {
+        try {
+            allGames = jsonReader.read();
+            System.out.println("Loaded match history from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }
 

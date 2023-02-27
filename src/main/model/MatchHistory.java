@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 // a list of games, each game has a unique id associated with it
 
-public class MatchHistory {
+public class MatchHistory implements Writable {
     private final HashMap<Integer, Game> games;
     private int id = 0;
 
@@ -106,6 +110,24 @@ public class MatchHistory {
         }
         return -1;
 
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("games", gamesToJson());
+        return jsonObj;
+
+    }
+
+    private JSONArray gamesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Game g : games.values()) {
+            jsonArray.put(g.toJson());
+        }
+
+        return jsonArray;
     }
 
 }

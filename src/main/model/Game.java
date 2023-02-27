@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 // Each individual game with a rank, local date, comp name, and if a win occurred
 
-public class Game {
+public class Game implements Writable {
     private int rank; // final placement from 1st to 8th
     private final String date; // local date
     private String comp; // name of comp played
@@ -65,4 +68,11 @@ public class Game {
         this.comp = newComp;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("rank", rank);
+        jsonObj.put("comp", comp);
+        return jsonObj;
+    }
 }
