@@ -120,6 +120,7 @@ public class MatchHistory implements Writable {
 
     }
 
+    // EFFECTS: returns games in this match history as a JSON array
     private JSONArray gamesToJson() {
         JSONArray jsonArray = new JSONArray();
 

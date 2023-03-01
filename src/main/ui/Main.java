@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 // Citation: referenced code from the teller app + fitlifegym projects
 // Citation: JsonSerializationDemo from EdX, Phase 2
 
-
-
 public class Main {
     public static void main(String[] args) {
         try {
