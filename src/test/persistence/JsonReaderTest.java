@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Source: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo, JsonReaderTest
 public class JsonReaderTest extends JsonTest {
 
     @Test

@@ -16,11 +16,11 @@
 
 ## User Stories: ## 
 
-- ** As a user, I want to be able to create a game and add it to my list of games played**
-- ** As a user, I want to be able to view a list of games played - display date and title **
+- As a user, I want to be able to create a game and add it to my list of games played
+- As a user, I want to be able to view a list of games played - display name of comp and rank
 - As a user, I want to be able to remove games from my list of games played
-- ** As a user, I want to be able to edit the games in my match history **
-- ** As a user, I want to be able to view stats on games played. Stats include the number of times I have placed in each rank, total winrate, and the number of times a comp has been used. **
+- As a user, I want to be able to edit the games in my match history
+- As a user, I want to be able to view stats on games played. Stats include the number of times I have placed in each rank, total winrate, and the number of times a comp has been used. 
 
-- As a user, when I select quit in the menu, I want to have the option to save my match history to file.
+- As a user, I want to have the option to save my match history to file. All information about each game in the match history (name and placement) is saved but game ids are reset upon loading to increment by 1 since they are part of the match history's functionality in order to access information and not affected by user input.
 - As a user, when I start the app, I want to be given the option to load my match history from file.

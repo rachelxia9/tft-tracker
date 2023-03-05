@@ -215,8 +215,8 @@ public class TftApp {
             int id = allGames.getID(g);
             int rank = g.getRank();
             String comp = g.getComp();
-            String date = g.getLocalDate();
-            System.out.println("Date: " + date + " | Game ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
+           // String date = g.getLocalDate();
+            System.out.println("ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
         }
         displayStart();
     }
