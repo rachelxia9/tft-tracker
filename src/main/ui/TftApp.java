@@ -17,9 +17,9 @@ public class TftApp {
 
     private static final String OPEN_COMMAND = "open";
     private static final String ADD_COMMAND = "add";
-    private static final String REMOVE_COMMAND = "remove";
+    //private static final String REMOVE_COMMAND = "remove";
     private static final String STATS_COMMAND = "stats";
-    private static final String QUIT_COMMAND = "quit";
+    private  static final String QUIT_COMMAND = "quit";
     private static final String EDIT_COMMAND = "edit";
     private static final String SAVE_COMMAND = "save";
     private static final String LOAD_COMMAND = "load";
@@ -72,9 +72,9 @@ public class TftApp {
                 case ADD_COMMAND:
                     addTo();
                     break;
-                case REMOVE_COMMAND:
-                    removeFrom();
-                    break;
+//                case REMOVE_COMMAND:
+//                    removeFrom();
+//                    break;
                 case STATS_COMMAND:
                     displayStats();
                     break;
@@ -103,7 +103,7 @@ public class TftApp {
         System.out.println("\nSelect an option:");
         System.out.println("\t Enter '" + ADD_COMMAND + "' to add a tft game to your current match history");
         System.out.println("\t Enter '" + OPEN_COMMAND + "' to open your match history");
-        System.out.println("\t Enter '" + REMOVE_COMMAND + "' to remove a tft game from your match history");
+        //System.out.println("\t Enter '" + REMOVE_COMMAND + "' to remove a tft game from your match history");
         System.out.println("\t Enter '" + EDIT_COMMAND + "' to edit a game in your match history");
         System.out.println("\t Enter '" + STATS_COMMAND + "' to view your stats so far");
         System.out.println("\t Enter '" + SAVE_COMMAND + "' to save match history to file");
@@ -154,24 +154,24 @@ public class TftApp {
 
     // MODIFIES: this
     // EFFECTS: removes given game from match history in app
-    private void removeFrom() {
-        HashMap<Integer, Game> games = allGames.getGames();
-
-        System.out.println("Please enter the id of the game you want to remove:");
-        String num = input.nextLine().trim();
-        try {
-            int id = Integer.parseInt(num);
-            if (games.containsKey(id)) {
-                allGames.removeGame(id);
-                System.out.println("Game " + id + " has been removed.");
-            } else {
-                System.out.println("Game not found.");
-            }
-        } catch (NumberFormatException nfe) {
-            System.out.println("NumberFormat Exception: invalid input string :(");
-        }
-        displayStart();
-    }
+//    private void removeFrom() {
+//        HashMap<Integer, Game> games = allGames.getGames();
+//
+//        System.out.println("Please enter the id of the game you want to remove:");
+//        String num = input.nextLine().trim();
+//        try {
+//            int id = Integer.parseInt(num);
+//            if (games.containsKey(id)) {
+//                allGames.removeGame(id);
+//                System.out.println("Game " + id + " has been removed.");
+//            } else {
+//                System.out.println("Game not found.");
+//            }
+//        } catch (NumberFormatException nfe) {
+//            System.out.println("NumberFormat Exception: invalid input string :(");
+//        }
+//        displayStart();
+//    }
 
 
     // MODIFIES: this

@@ -1,10 +1,14 @@
 {"games": [
     {
-        "comp": "yuumi",
+        "comp": "lux",
         "rank": 7
     },
     {
-        "comp": "rainbow",
-        "rank": 2
+        "comp": "yuumi",
+        "rank": 1
+    },
+    {
+        "comp": "jax",
+        "rank": 7
     }
 ]}
