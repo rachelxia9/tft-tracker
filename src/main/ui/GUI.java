@@ -1,6 +1,5 @@
 package ui;
 
-
 import model.Game;
 import model.MatchHistory;
 import persistence.JsonReader;
@@ -80,7 +79,7 @@ public class GUI extends JFrame implements ActionListener {
     private JButton backToMain2;
 
 
-    // SOURCE: SPACE INVADERS BASE
+    // SOURCE: SPACE INVADERS BASE, ButtonDemo: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
     // GUI constructs a new JFrame with components of app
     public GUI() {
         super("TFT APP");
@@ -99,8 +98,8 @@ public class GUI extends JFrame implements ActionListener {
         makeEditGamePanel();
 
 
-        JLabel startLabel = new JLabel("Welcome!");
-        //JLabel startImg = new JLabel();
+        JLabel startLabel = new JLabel("Welcome to the TFT tracker App!");
+//        JLabel startImg = new JLabel();
 //        startImg.setIcon(new ImageIcon("data/tft.jpeg"));
 //        startImg.setMinimumSize(new Dimension(700, 700));
         menu.add(startLabel);
@@ -123,9 +122,11 @@ public class GUI extends JFrame implements ActionListener {
         setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
     }
 
+    // SOURCES: Background Image: https://stackoverflow.com/questions/1466240/how-to-set-an-image-as-a-background-for-frame-in-swing-gui-of-java
     // EFFECTS: Make panel for main menu and set bg colour
     public void startMainMenu() {
         menu = new JPanel();
+
         final Image startImg;
         try {
             startImg = ImageIO.read(new File("data/tft.jpeg"));
@@ -138,9 +139,8 @@ public class GUI extends JFrame implements ActionListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-        menu.setBackground(Color.pink);
+        menu.setLocation(1000, 200);
+        menu.setBackground(new Color(213, 184, 222));
         this.add(menu);
         games = new JLabel();
         games.setText("No games in match history yet..."); // starts off empty until you load in data
@@ -155,11 +155,18 @@ public class GUI extends JFrame implements ActionListener {
         saveButton = new JButton(SAVE_COMMAND);
         loadButton = new JButton(LOAD_COMMAND);
         quitButton = new JButton(QUIT_COMMAND);
+        openButton.setIconTextGap(6);
+        saveButton.setIconTextGap(6);
+        loadButton.setIconTextGap(6);
+        quitButton.setIconTextGap(6);
+        editButton.setIconTextGap(6);
+        addButton.setIconTextGap(6);
+
     }
 
     // EFFECTS: helper for addButtons, adds a button to menu panel
     public void addButton(JButton button, JPanel panel) {
-        button.setFont(new Font("Arial", Font.PLAIN, 12));
+        button.setFont(new Font("Arial", Font.PLAIN, 15));
         button.setBackground(Color.white);
         panel.add(button);
         pack();
@@ -171,7 +178,7 @@ public class GUI extends JFrame implements ActionListener {
 
     // EFFECTS: helper for addButtons, adds a button to menu panel
     public void addMenuButton(JButton button, JPanel panel) {
-        button.setFont(new Font("Arial", Font.PLAIN, 12));
+        button.setFont(new Font("Arial", Font.PLAIN, 15));
         button.setBackground(Color.BLACK);
         button.setForeground(Color.white);
         panel.add(button);
@@ -193,6 +200,7 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
+    // SOURCES: ButtonDemo.java https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
     // MODIFIES: this
     // EFFECTS: Assign actions to buttons on menu panel
     public void makeButtonsDoStuff() {
@@ -216,6 +224,7 @@ public class GUI extends JFrame implements ActionListener {
         quitButton.setActionCommand(QUIT_COMMAND);
     }
 
+    // SOURCES: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
     // runs methods on match history upon click
     public void actionPerformed(ActionEvent ae) {
         if (ae.getActionCommand().equals(OPEN_COMMAND)) {
@@ -247,8 +256,8 @@ public class GUI extends JFrame implements ActionListener {
         JButton backToMain = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
-        addMenuButton(backToMain, matchHistoryPanel);
-       //addGamePanel.setPreferredSize(new Dimension(1000, 1000));
+        //addMenuButton(backToMain, matchHistoryPanel);
+        addGamePanel.setPreferredSize(new Dimension(1000, 1000));
 
         makeInputPage();
         addGameLabels();
@@ -294,6 +303,7 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
+    // SOURCES: https://docs.oracle.com/javase/tutorial/uiswing/components/html.html,https://www.w3schools.com/html/html_paragraphs.asp
     // MODIFIES: this
     // EFFECTS: Adds game inputted by user to match history
     public void addGame() {
@@ -327,7 +337,7 @@ public class GUI extends JFrame implements ActionListener {
         JButton backToMain2 = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
-        addMenuButton(backToMain2, matchHistoryPanel);
+        //addMenuButton(backToMain2, matchHistoryPanel);
 
         makeInputPageEdit();
         editGameLabels();
@@ -424,7 +434,7 @@ public class GUI extends JFrame implements ActionListener {
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
         addButton(backToMain, matchHistoryPanel);
-        matchHistoryPanel.setPreferredSize(new Dimension(1200, 800));
+        matchHistoryPanel.setPreferredSize(new Dimension(700, 700));
 
 //        BufferedImage tft = null;
 //        try {
