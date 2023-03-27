@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 
 // main class that runs app
 // Citation: referenced code from the teller app + fitlifegym projects

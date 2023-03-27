@@ -1,19 +1,40 @@
 package ui;
 
+
 import model.Game;
 import model.MatchHistory;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 // SOURCES: Robust Traffic Light, Alarm System
 
 public class GUI extends JFrame implements ActionListener {
-    private static final String MATCHHISTORY_FILE = "./data/matchHistory.json";
+
+    private static final String JSON_STORE = "./data/matchHistory.json";
+    private static JDesktopPane desktop;
+    private static JInternalFrame controlPanel;
+
     private MatchHistory mh;
     private Game game;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     private JPanel menu;
     private JButton openButton;
@@ -32,6 +53,8 @@ public class GUI extends JFrame implements ActionListener {
     private static final String SAVE_COMMAND = "save";
     private static final String LOAD_COMMAND = "load";
     private static final String RETURN_MAIN = "return to the main menu";
+    private static final String ADD_GAME = "add game to history";
+    private static final String EDIT_GAME = "edit game in history";
 
 
     private JPanel matchHistoryPanel;
@@ -40,36 +63,92 @@ public class GUI extends JFrame implements ActionListener {
 
     private JPanel addGamePanel;
     private JButton addGame;
+    private JLabel rank;
+    private JLabel comp;
+    private JTextField rankText;
+    private JTextField compText;
+    private JButton backToMain;
+    private ArrayList<String> info;
+    private JPanel editGamePanel;
+    private JButton editGame;
+    private JLabel id2;
+    private JTextField idText2;
+    private JTextField rankText2;
+    private JTextField compText2;
+    private JLabel rank2;
+    private JLabel comp2;
+    private JButton backToMain2;
 
 
+    // SOURCE: SPACE INVADERS BASE
     // GUI constructs a new JFrame with components of app
     public GUI() {
-        super("TFT App");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        super("TFT APP");
+        mh = new MatchHistory();
+        centreOnScreen();
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(700, 700));
+
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+
         startMainMenu();
         makeMatchHistoryPanel();
         makeAddGamePanel();
+        makeEditGamePanel();
+
+
+        JLabel startLabel = new JLabel("Welcome!");
+        //JLabel startImg = new JLabel();
+//        startImg.setIcon(new ImageIcon("data/tft.jpeg"));
+//        startImg.setMinimumSize(new Dimension(700, 700));
+        menu.add(startLabel);
+//        menu.add(startImg);
 
         initializeMenuButtons();
-        addButtons();
+        addButtons(openButton, addButton, editButton, saveButton, loadButton, quitButton);
         makeButtonsDoStuff();
 
         menu.setVisible(true);
 
     }
 
+    // SOURCE: SPACE INVADERS BASE
+    // Centres frame on desktop
+    // modifies: this
+    // effects:  location of frame is set so frame is centred on desktop
+    private void centreOnScreen() {
+        Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
+    }
+
     // EFFECTS: Make panel for main menu and set bg colour
-    private void startMainMenu() {
+    public void startMainMenu() {
         menu = new JPanel();
+        final Image startImg;
+        try {
+            startImg = ImageIO.read(new File("data/tft.jpeg"));
+            setContentPane(new JPanel() {
+                @Override
+                public void paintComponent(Graphics g) {
+                    g.drawImage((startImg), 0, 0, null);
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         menu.setBackground(Color.pink);
-        add(menu);
+        this.add(menu);
         games = new JLabel();
         games.setText("No games in match history yet..."); // starts off empty until you load in data
     }
 
+
     // EFFECTS: Initializes buttons for the main menu with labels
-    private void initializeMenuButtons() {
+    public void initializeMenuButtons() {
         openButton = new JButton(OPEN_COMMAND);
         addButton = new JButton(ADD_COMMAND);
         editButton = new JButton(EDIT_COMMAND);
@@ -79,17 +158,31 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // EFFECTS: helper for addButtons, adds a button to menu panel
-    private void addButton(JButton button, JPanel panel) {
-
+    public void addButton(JButton button, JPanel panel) {
+        button.setFont(new Font("Arial", Font.PLAIN, 12));
         button.setBackground(Color.white);
         panel.add(button);
+        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
 
 
     }
 
+    // EFFECTS: helper for addButtons, adds a button to menu panel
+    public void addMenuButton(JButton button, JPanel panel) {
+        button.setFont(new Font("Arial", Font.PLAIN, 12));
+        button.setBackground(Color.BLACK);
+        button.setForeground(Color.white);
+        panel.add(button);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
     // EFFECTS: adds given buttons to menu panel
-    private void addButtons() {
+    public void addButtons(JButton openButton, JButton addButton, JButton editButton, JButton saveButton,
+                           JButton loadButton, JButton quitButton) {
         addButton(openButton, menu);
         addButton(addButton, menu);
         addButton(editButton, menu);
@@ -102,7 +195,7 @@ public class GUI extends JFrame implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: Assign actions to buttons on menu panel
-    private void makeButtonsDoStuff() {
+    public void makeButtonsDoStuff() {
 
         openButton.addActionListener(this);
         openButton.setActionCommand(OPEN_COMMAND);
@@ -124,49 +217,292 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // runs methods on match history upon click
-    private void runButtons(ActionEvent ae) {
+    public void actionPerformed(ActionEvent ae) {
         if (ae.getActionCommand().equals(OPEN_COMMAND)) {
             displayMatchHistory();
+        } else if (ae.getActionCommand().equals(ADD_COMMAND)) {
+            displayAddGamePanel();
+        } else if (ae.getActionCommand().equals(EDIT_COMMAND)) {
+            displayEditGamePanel();
+        } else if (ae.getActionCommand().equals(EDIT_GAME)) {
+            editGame();
+        } else if (ae.getActionCommand().equals(ADD_GAME)) {
+            addGame();
+        } else if (ae.getActionCommand().equals(RETURN_MAIN)) {
+            returnMain();
+
+        } else if (ae.getActionCommand().equals(SAVE_COMMAND)) {
+            saveMatchHistory();
+        } else if (ae.getActionCommand().equals(LOAD_COMMAND)) {
+            loadMatchHistory();
+        } else if (ae.getActionCommand().equals(QUIT_COMMAND)) {
+            System.exit(0);
+
         }
     }
 
-    // EFFECTS: Adds the match history panel to the screen and hides the other ones
-    private void displayMatchHistory() {
-        add(matchHistoryPanel);
-        matchHistoryPanel.setVisible(true);
-        menu.setVisible(false);
-        addGamePanel.setVisible(false);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: Constructs match history panel
-    private void makeMatchHistoryPanel() {
-
-        JScrollPane scrollItem = new JScrollPane(games, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    // EFFECTS: Makes panel for user input related to add game function
+    public void makeAddGamePanel() {
+        addGamePanel = new JPanel(new GridLayout(4, 2));
         JButton backToMain = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
-        addButton(backToMain, matchHistoryPanel);
-        matchHistoryPanel.add(scrollItem);
+        addMenuButton(backToMain, matchHistoryPanel);
+       //addGamePanel.setPreferredSize(new Dimension(1000, 1000));
 
+        makeInputPage();
+        addGameLabels();
     }
 
     // EFFECTS: Adds the panel for add game action to the screen and hides the other ones
-    private void displayAddGamePanel() {
+    public void displayAddGamePanel() {
         add(addGamePanel);
         matchHistoryPanel.setVisible(false);
         menu.setVisible(false);
         addGamePanel.setVisible(true);
+        editGamePanel.setVisible(false);
     }
 
-    private void makeAddGamePanel() {
+    // EFFECTS: constructs the fields for the add game panel
+    public void makeInputPage() {
+        backToMain = new JButton(RETURN_MAIN);
+        backToMain.setActionCommand(RETURN_MAIN);
+        backToMain.addActionListener(this);
+
+        addGame = new JButton(ADD_GAME);
+        addGame.setActionCommand(ADD_GAME);
+        addGame.addActionListener(this);
+
+        rank = new JLabel("Enter your rank:");
+        rankText = new JTextField(1);
+
+        comp = new JLabel("Enter the name of your comp:");
+        compText = new JTextField(15);
+
+        // visible = false;
+    }
+
+    // EFFECTS: adds labels to add game panel
+    public void addGameLabels() {
+        addGamePanel.add(rank);
+        addGamePanel.add(rankText);
+        addGamePanel.add(comp);
+        addGamePanel.add(compText);
+        addGamePanel.add(addGame); // puts add game button on menu with
+        addGamePanel.add(backToMain);
+
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Adds game inputted by user to match history
+    public void addGame() {
+        try {
+            String rankString = rankText.getText().trim();
+            String compString = compText.getText().trim();
+            game = new Game(Integer.parseInt(rankString), compString);
+            mh.addGame(game);
+//            games.setText(String.valueOf(mh.getGames().values()));
+
+            HashMap<Integer, Game> allGames = mh.getGames();
+            info = new ArrayList<>();
+
+            for (Game g : allGames.values()) {
+                int id = mh.getID(g);
+                int rank = g.getRank();
+                String comp = g.getComp();
+                info.add("ID: " + id + " | Rank: " + rank + " | Comp: " + comp);
+            }
+            games.setText("<html><pre> Games: \n" + " " + info + "\n</pre></html>");
+        } catch (NumberFormatException nfe) {
+            System.out.println("NumberFormat Exception: invalid input string :(");
+        } catch (IndexOutOfBoundsException e) {
+            games.setText("Initialize match history file first");
+        }
+    }
+
+    // EFFECTS: Makes panel for user input related to edit game function
+    public void makeEditGamePanel() {
+        editGamePanel = new JPanel(new GridLayout(5, 3));
+        JButton backToMain2 = new JButton(RETURN_MAIN);
+        backToMain.setActionCommand(RETURN_MAIN);
+        backToMain.addActionListener(this);
+        addMenuButton(backToMain2, matchHistoryPanel);
+
+        makeInputPageEdit();
+        editGameLabels();
+    }
+
+    // EFFECTS: Adds the panel for edit game action to the screen and hides the other ones
+    public void displayEditGamePanel() {
+        add(editGamePanel);
+        matchHistoryPanel.setVisible(false);
+        menu.setVisible(false);
+        addGamePanel.setVisible(false);
+        editGamePanel.setVisible(true);
+    }
+
+    // EFFECTS: constructs the fields for the add game panel
+    public void makeInputPageEdit() {
+        backToMain2 = new JButton(RETURN_MAIN);
+        backToMain2.setActionCommand(RETURN_MAIN);
+        backToMain2.addActionListener(this);
+
+        editGame = new JButton(EDIT_GAME);
+        editGame.setActionCommand(EDIT_GAME);
+        editGame.addActionListener(this);
+
+        id2 = new JLabel("Enter the id of the game you want to replace");
+        idText2 = new JTextField(1);
+
+        rank2 = new JLabel("Enter your rank:");
+        rankText2 = new JTextField(1);
+
+        comp2 = new JLabel("Enter the name of your comp:");
+        compText2 = new JTextField(15);
+
+        // visible = false;
+    }
+
+    // EFFECTS: adds labels to add game panel
+    public void editGameLabels() {
+        editGamePanel.add(id2);
+        editGamePanel.add(idText2);
+        editGamePanel.add(rank2);
+        editGamePanel.add(rankText2);
+        editGamePanel.add(comp2);
+        editGamePanel.add(compText2);
+        editGamePanel.add(editGame); // puts add game button on menu with
+        editGamePanel.add(backToMain2);
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Adds game inputted by user to match history
+    public void editGame() {
+        try {
+            HashMap<Integer, Game> allGames = mh.getGames();
+            String idString2 = idText2.getText().trim();
+            if (!allGames.containsKey(Integer.parseInt(idString2))) {
+                System.out.println("Game not found");
+            } else {
+                Game g = mh.accessGame(Integer.parseInt(idString2));
+                g.updateRank(Integer.parseInt(rankText2.getText().trim()));
+                g.updateComp(compText2.getText().trim());
+            }
+            HashMap<Integer, Game> updated = mh.getGames();
+            info = new ArrayList<>();
+            for (Game g : updated.values()) {
+//                int id = mh.getID(g);
+//                int rank = g.getRank();
+//                String comp = g.getComp();
+                info.add("ID: " + mh.getID(g) + " | Rank: " + g.getRank() + " | Comp: " + g.getComp());
+            }
+            games.setText("<html><pre> Games: \n" + " " + info + "\n</pre></html>");
+        } catch (NumberFormatException nfe) {
+            System.out.println("NumberFormat Exception: invalid input string :(");
+        } catch (IndexOutOfBoundsException e) {
+            games.setText("Initialize match history file first");
+        }
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: Constructs match history panel
+    public void makeMatchHistoryPanel() {
+        matchHistoryPanel = new JPanel();
+        matchHistoryPanel.setLayout(new BoxLayout(matchHistoryPanel, BoxLayout.PAGE_AXIS));
+
+        JScrollPane scrollItem = new JScrollPane(games, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//        JList list = new JList(info.toArray());
+//        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+//        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+//        list.setVisibleRowCount(-1);
+//        JScrollPane scrollItem  = new JScrollPane(list);
+        JButton backToMain = new JButton(RETURN_MAIN);
+        backToMain.setActionCommand(RETURN_MAIN);
+        backToMain.addActionListener(this);
+        addButton(backToMain, matchHistoryPanel);
+        matchHistoryPanel.setPreferredSize(new Dimension(1200, 800));
+
+//        BufferedImage tft = null;
+//        try {
+//            tft = ImageIO.read(new File("./data/tft.jpg"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        JLabel label = new JLabel(new ImageIcon(tft));
+//        matchHistoryPanel.add(label);
+//        img.setIcon(new ImageIcon("./data/tft.png"));
+//        img.setMinimumSize(new Dimension(5, 5));
+//        menu.add(img);
+        matchHistoryPanel.add(scrollItem);
+
+    }
+
+    // EFFECTS: Adds the match history panel to the screen and hides the other ones
+    public void displayMatchHistory() {
+        add(matchHistoryPanel);
+        matchHistoryPanel.setVisible(true);
+        menu.setVisible(false);
+        addGamePanel.setVisible(false);
+        editGamePanel.setVisible(false);
 
     }
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
+    public void saveMatchHistory() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(mh);
+            jsonWriter.close();
+            System.out.println("Saved match history to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        } catch (NullPointerException e) {
+            System.out.println("Load file first");
+        }
     }
+
+    public void loadMatchHistory() {
+        try {
+            mh = jsonReader.read();
+
+            HashMap<Integer, Game> allGames = mh.getGames();
+            ArrayList<String> info = new ArrayList<>();
+            for (Game g : allGames.values()) {
+                int id = mh.getID(g);
+                int rank = g.getRank();
+                String comp = g.getComp();
+                info.add("ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
+            }
+            games.setText("Current games" + info);
+            System.out.println("Loaded match history from " + JSON_STORE);
+
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+            games.setText("Empty match history file");
+        } catch (IndexOutOfBoundsException e) {
+            games.setText("Initialize history first");
+
+        }
+    }
+
+    public void returnMain() {
+        matchHistoryPanel.setVisible(false);
+        menu.setVisible(true);
+        addGamePanel.setVisible(false);
+        editGamePanel.setVisible(false);
+    }
+
+    // SOURCE: CPSC 210 ALARM SYSTEM
+    private class DesktopFocusAction extends MouseAdapter {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            GUI.this.requestFocusInWindow();
+        }
+    }
+
 }
