@@ -77,10 +77,11 @@ public class GUI extends JFrame implements ActionListener {
     private JLabel rank2;
     private JLabel comp2;
     private JButton backToMain2;
+    private JLabel warning;
 
 
     // SOURCE: SPACE INVADERS BASE, ButtonDemo: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
-    // GUI constructs a new JFrame with components of app
+    // GUI constructor constructs a new JFrame with components of app - menu, input panels, add, and edit panels
     public GUI() {
         super("TFT APP");
         mh = new MatchHistory();
@@ -117,12 +118,14 @@ public class GUI extends JFrame implements ActionListener {
     // Centres frame on desktop
     // modifies: this
     // effects:  location of frame is set so frame is centred on desktop
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ centreOnScreen() in AlarmControllerUI
     private void centreOnScreen() {
         Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
     }
 
     // SOURCES: Background Image: https://stackoverflow.com/questions/1466240/how-to-set-an-image-as-a-background-for-frame-in-swing-gui-of-java
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ addButtonPanel()
     // EFFECTS: Make panel for main menu and set bg colour
     public void startMainMenu() {
         menu = new JPanel();
@@ -146,22 +149,21 @@ public class GUI extends JFrame implements ActionListener {
         games.setText("No games in match history yet..."); // starts off empty until you load in data
     }
 
-
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ addButtonPanel()
     // EFFECTS: Initializes buttons for the main menu with labels
     public void initializeMenuButtons() {
         openButton = new JButton(OPEN_COMMAND);
-        addButton = new JButton(ADD_COMMAND);
-        editButton = new JButton(EDIT_COMMAND);
-        saveButton = new JButton(SAVE_COMMAND);
-        loadButton = new JButton(LOAD_COMMAND);
-        quitButton = new JButton(QUIT_COMMAND);
         openButton.setIconTextGap(6);
-        saveButton.setIconTextGap(6);
-        loadButton.setIconTextGap(6);
-        quitButton.setIconTextGap(6);
-        editButton.setIconTextGap(6);
+        addButton = new JButton(ADD_COMMAND);
         addButton.setIconTextGap(6);
-
+        editButton = new JButton(EDIT_COMMAND);
+        editButton.setIconTextGap(6);
+        saveButton = new JButton(SAVE_COMMAND);
+        saveButton.setIconTextGap(6);
+        loadButton = new JButton(LOAD_COMMAND);
+        loadButton.setIconTextGap(6);
+        quitButton = new JButton(QUIT_COMMAND);
+        quitButton.setIconTextGap(6);
     }
 
     // EFFECTS: helper for addButtons, adds a button to menu panel
@@ -225,6 +227,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // SOURCES: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
+    // https://github.students.cs.ubc.ca/CPSC210/C3-LectureLabSolution/blob/776c8678071abed56af8e793b57ab2b39046a9eb/src/main/gui/IntersectionGUI.java
     // runs methods on match history upon click
     public void actionPerformed(ActionEvent ae) {
         if (ae.getActionCommand().equals(OPEN_COMMAND)) {
@@ -250,6 +253,7 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ addButtonPanel()
     // EFFECTS: Makes panel for user input related to add game function
     public void makeAddGamePanel() {
         addGamePanel = new JPanel(new GridLayout(4, 2));
@@ -257,12 +261,13 @@ public class GUI extends JFrame implements ActionListener {
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
         //addMenuButton(backToMain, matchHistoryPanel);
-        addGamePanel.setPreferredSize(new Dimension(1000, 1000));
+        //addGamePanel.setPreferredSize(new Dimension(1000, 1000));
 
         makeInputPage();
         addGameLabels();
     }
 
+    // SOURCE: https://stackoverflow.com/questions/5600051/java-swing-how-to-toggle-panels-visibility
     // EFFECTS: Adds the panel for add game action to the screen and hides the other ones
     public void displayAddGamePanel() {
         add(addGamePanel);
@@ -280,9 +285,10 @@ public class GUI extends JFrame implements ActionListener {
 
         addGame = new JButton(ADD_GAME);
         addGame.setActionCommand(ADD_GAME);
-        addGame.addActionListener(this);
+        addGame.addActionListener(this)
+        ;
 
-        rank = new JLabel("Enter your rank:");
+        rank = new JLabel("Enter your rank (1-8):");
         rankText = new JTextField(1);
 
         comp = new JLabel("Enter the name of your comp:");
@@ -304,15 +310,21 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // SOURCES: https://docs.oracle.com/javase/tutorial/uiswing/components/html.html,https://www.w3schools.com/html/html_paragraphs.asp
+    // https://stackoverflow.com/questions/53110312/how-to-set-a-range-e-g-1-20-for-numeric-values-in-jtextfield
     // MODIFIES: this
     // EFFECTS: Adds game inputted by user to match history
     public void addGame() {
         try {
             String rankString = rankText.getText().trim();
-            String compString = compText.getText().trim();
-            game = new Game(Integer.parseInt(rankString), compString);
+
+            if (Integer.parseInt(rankString) < 1 || Integer.parseInt(rankString) > 8) {
+                //String message = "Your number is out of range";
+                JOptionPane.showMessageDialog(null, "Your number is out of range", "Output", JOptionPane.PLAIN_MESSAGE);
+                rankString = "";
+            }
+            //String compString = compText.getText().trim();
+            game = new Game(Integer.parseInt(rankString), compText.getText().trim());
             mh.addGame(game);
-//            games.setText(String.valueOf(mh.getGames().values()));
 
             HashMap<Integer, Game> allGames = mh.getGames();
             info = new ArrayList<>();
@@ -334,7 +346,7 @@ public class GUI extends JFrame implements ActionListener {
     // EFFECTS: Makes panel for user input related to edit game function
     public void makeEditGamePanel() {
         editGamePanel = new JPanel(new GridLayout(5, 3));
-        JButton backToMain2 = new JButton(RETURN_MAIN);
+        JButton backToMain = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
         //addMenuButton(backToMain2, matchHistoryPanel);
@@ -365,7 +377,7 @@ public class GUI extends JFrame implements ActionListener {
         id2 = new JLabel("Enter the id of the game you want to replace");
         idText2 = new JTextField(1);
 
-        rank2 = new JLabel("Enter your rank:");
+        rank2 = new JLabel("Enter your rank (1-8):");
         rankText2 = new JTextField(1);
 
         comp2 = new JLabel("Enter the name of your comp:");
@@ -387,25 +399,30 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
+    // SOURCE: https://stackoverflow.com/questions/53110312/how-to-set-a-range-e-g-1-20-for-numeric-values-in-jtextfield
     // MODIFIES: this
-    // EFFECTS: Adds game inputted by user to match history
+    // EFFECTS: Edits game in history based on info inputted by user
     public void editGame() {
         try {
-            HashMap<Integer, Game> allGames = mh.getGames();
-            String idString2 = idText2.getText().trim();
-            if (!allGames.containsKey(Integer.parseInt(idString2))) {
-                System.out.println("Game not found");
+            //HashMap<Integer, Game> allGames = mh.getGames();
+            //String idString2 = idText2.getText().trim();
+            if (!mh.getGames().containsKey(Integer.parseInt(idText2.getText().trim()))) {
+                JOptionPane.showMessageDialog(null, "Game not found", "Output", JOptionPane.PLAIN_MESSAGE);
+                //System.out.println("Game not found");
             } else {
-                Game g = mh.accessGame(Integer.parseInt(idString2));
-                g.updateRank(Integer.parseInt(rankText2.getText().trim()));
+                Game g = mh.accessGame(Integer.parseInt(idText2.getText().trim()));
+                String rankString = rankText2.getText().trim();
+                if (Integer.parseInt(rankString) < 1 || Integer.parseInt(rankString) > 8) {
+                    //String message = "Your number is out of range";
+                    JOptionPane.showMessageDialog(null, "Out of range", "Output", JOptionPane.PLAIN_MESSAGE);
+                    rankString = "";
+                }
+                g.updateRank(Integer.parseInt(rankString));
                 g.updateComp(compText2.getText().trim());
             }
-            HashMap<Integer, Game> updated = mh.getGames();
+            //HashMap<Integer, Game> updated = mh.getGames();
             info = new ArrayList<>();
-            for (Game g : updated.values()) {
-//                int id = mh.getID(g);
-//                int rank = g.getRank();
-//                String comp = g.getComp();
+            for (Game g : mh.getGames().values()) {
                 info.add("ID: " + mh.getID(g) + " | Rank: " + g.getRank() + " | Comp: " + g.getComp());
             }
             games.setText("<html><pre> Games: \n" + " " + info + "\n</pre></html>");
@@ -416,7 +433,7 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
-
+    // SOURCE: https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html
     // MODIFIES: this
     // EFFECTS: Constructs match history panel
     public void makeMatchHistoryPanel() {
@@ -506,7 +523,7 @@ public class GUI extends JFrame implements ActionListener {
         editGamePanel.setVisible(false);
     }
 
-    // SOURCE: CPSC 210 ALARM SYSTEM
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  DesktopFocusAction
     private class DesktopFocusAction extends MouseAdapter {
 
         @Override
