@@ -10,14 +10,10 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[] args) {
-        new GUI();
+        try {
+            new TftApp();
+        } catch (FileNotFoundException e) {
+            System.out.println("Application cannot be run: file not found");
+        }
     }
-
-//    public static void main(String[] args) {
-//        try {
-//            new TftApp();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Application cannot be run: file not found");
-//        }
-//    }
 }
