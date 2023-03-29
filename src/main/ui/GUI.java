@@ -81,6 +81,7 @@ public class GUI extends JFrame implements ActionListener {
 
 
     // SOURCE: SPACE INVADERS BASE, ButtonDemo: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
+    // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     // GUI constructor constructs a new JFrame with components of app - menu, input panels, add, and edit panels
     public GUI() {
         super("TFT APP");
@@ -166,6 +167,7 @@ public class GUI extends JFrame implements ActionListener {
         quitButton.setIconTextGap(6);
     }
 
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/B02-SpaceInvadersBase/blob/a29bdc4920f7d5d1f3844454a1bc3c5a257cc56f/src/main/ca/ubc/cpsc210/spaceinvaders/ui/SpaceInvaders.java
     // EFFECTS: helper for addButtons, adds a button to menu panel
     public void addButton(JButton button, JPanel panel) {
         button.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -178,6 +180,7 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/B02-SpaceInvadersBase/blob/a29bdc4920f7d5d1f3844454a1bc3c5a257cc56f/src/main/ca/ubc/cpsc210/spaceinvaders/ui/SpaceInvaders.java
     // EFFECTS: helper for addButtons, adds a button to menu panel
     public void addMenuButton(JButton button, JPanel panel) {
         button.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -268,6 +271,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // SOURCE: https://stackoverflow.com/questions/5600051/java-swing-how-to-toggle-panels-visibility
+    // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     // EFFECTS: Adds the panel for add game action to the screen and hides the other ones
     public void displayAddGamePanel() {
         add(addGamePanel);
@@ -355,6 +359,8 @@ public class GUI extends JFrame implements ActionListener {
         editGameLabels();
     }
 
+    // SOURCE: https://stackoverflow.com/questions/5600051/java-swing-how-to-toggle-panels-visibility
+    // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     // EFFECTS: Adds the panel for edit game action to the screen and hides the other ones
     public void displayEditGamePanel() {
         add(editGamePanel);
@@ -468,6 +474,8 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
+    // SOURCE: https://stackoverflow.com/questions/5600051/java-swing-how-to-toggle-panels-visibility
+    // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     // EFFECTS: Adds the match history panel to the screen and hides the other ones
     public void displayMatchHistory() {
         add(matchHistoryPanel);
@@ -478,7 +486,7 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
-
+    // EFFECTS: save match history to file
     public void saveMatchHistory() {
         try {
             jsonWriter.open();
@@ -492,6 +500,8 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads match history from file
     public void loadMatchHistory() {
         try {
             mh = jsonReader.read();
@@ -516,6 +526,8 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
+    // SOURCE: https://stackoverflow.com/questions/5600051/java-swing-how-to-toggle-panels-visibility
+    // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     public void returnMain() {
         matchHistoryPanel.setVisible(false);
         menu.setVisible(true);

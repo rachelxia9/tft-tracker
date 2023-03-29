@@ -20,18 +20,26 @@
 - As a user, I want to be able to view a list of games played - display name of comp and rank
 - As a user, I want to be able to edit the games in my match history
 - As a user, I want to be able to view stats on games played. Stats include the number of times I have placed in each rank, total winrate, and the number of times a comp has been used. 
-- As a user, I want to be able to remove a game from my match history. 
+- REMOVED: As a user, I want to be able to remove a game from my match history. 
 
 - As a user, I want to have the option to save my match history to file. 
 - As a user, when I start the app, I want to be given the option to load my match history from file. 
   - UPDATE TO ABOVE USER STORY: As a user, I want to be able to load and save the state of the application
 
 # Instructions for Grader
-- app works best in full screen
+- match history might be easier to see in full view 
 
-- You can generate the first required action related to adding Xs to a Y by clicking on 'add' and inputting data, click 'return to main menu' and click 'open' to see the updated history.
+- You can generate the first required action related to adding Xs to a Y by clicking on 'add' and inputting data, click 'return to main menu' and click 'open' to see the updated history. 
+  - if inputted rank is out of range, pop-up appears and game isn't added
 - You can generate the second required action related to adding Xs to a Y by clicking on 'edit' and inputting data, click 'return to main menu' and click 'open' to see the updated history.
-- You can locate my visual component by opening the app - it should be on the menu page. 
+  - if inputted rank is out of range, pop-up appears and game isn't edited
+- You can locate my visual component by opening the app - it is the background of the main panel
 - You can save the state of my application by clicking 'save' in the main menu
 - You can reload the state of my application by clicking 'load' in the main menu
 
+
+## Projects Referenced ##
+- https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/
+- https://github.students.cs.ubc.ca/CPSC210/B02-SpaceInvadersBase 
+- https://github.students.cs.ubc.ca/CPSC210/C3-LectureLabSolution/blob/776c8678071abed56af8e793b57ab2b39046a9eb/src/main/gui/IntersectionGUI.java
+- https://github.students.cs.ubc.ca/CPSC210/SimpleDrawingPlayer-Starter/blob/1f78f052e49d4497d3550df2e40ca91991e46327/src/ui/DrawingEditor.java
