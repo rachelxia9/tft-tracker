@@ -1,10 +1,54 @@
 {"games": [
     {
-        "comp": "weghJ;Kweghjkewh",
+        "comp": "help",
+        "rank": 8
+    },
+    {
+        "comp": "daeja",
+        "rank": 8
+    },
+    {
+        "comp": "2",
         "rank": 1
     },
     {
-        "comp": "janna",
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "daeja",
         "rank": 8
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "syphen",
+        "rank": 8
+    },
+    {
+        "comp": "yay",
+        "rank": 5
     }
 ]}

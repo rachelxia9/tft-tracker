@@ -12,14 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// SOURCES: Robust Traffic Light, Alarm System
+// GUI class represents GUI of TFT tracker application
 
 public class GUI extends JFrame implements ActionListener {
 
@@ -78,6 +77,7 @@ public class GUI extends JFrame implements ActionListener {
     private JLabel comp2;
     private JButton backToMain2;
     private JLabel warning;
+    private JTextArea mhTxt;
 
 
     // SOURCE: SPACE INVADERS BASE, ButtonDemo: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
@@ -315,6 +315,7 @@ public class GUI extends JFrame implements ActionListener {
 
     // SOURCES: https://docs.oracle.com/javase/tutorial/uiswing/components/html.html,https://www.w3schools.com/html/html_paragraphs.asp
     // https://stackoverflow.com/questions/53110312/how-to-set-a-range-e-g-1-20-for-numeric-values-in-jtextfield
+    // https://coderanch.com/t/483677/java/JTextArea-realtime-update
     // MODIFIES: this
     // EFFECTS: Adds game inputted by user to match history
     public void addGame() {
@@ -327,19 +328,12 @@ public class GUI extends JFrame implements ActionListener {
                 rankString = "";
             }
             //String compString = compText.getText().trim();
-            game = new Game(Integer.parseInt(rankString), compText.getText().trim());
+            int rank = Integer.parseInt(rankString);
+            String comp = compText.getText().trim();
+            game = new Game(rank, comp);
             mh.addGame(game);
-
-            HashMap<Integer, Game> allGames = mh.getGames();
-            info = new ArrayList<>();
-
-            for (Game g : allGames.values()) {
-                int id = mh.getID(g);
-                int rank = g.getRank();
-                String comp = g.getComp();
-                info.add("ID: " + id + " | Rank: " + rank + " | Comp: " + comp);
-            }
-            games.setText("<html><pre> Games: \n" + " " + info + "\n</pre></html>");
+            mhTxt.append("ID: " + mh.getID(game) + " | Rank: " + rank + " | Comp: " + comp + "\n");
+            games.setText("");
         } catch (NumberFormatException nfe) {
             System.out.println("NumberFormat Exception: invalid input string :(");
         } catch (IndexOutOfBoundsException e) {
@@ -406,32 +400,31 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // SOURCE: https://stackoverflow.com/questions/53110312/how-to-set-a-range-e-g-1-20-for-numeric-values-in-jtextfield
+    // https://stackoverflow.com/questions/17163699/clear-text-from-a-jtextarea
     // MODIFIES: this
     // EFFECTS: Edits game in history based on info inputted by user
     public void editGame() {
         try {
-            //HashMap<Integer, Game> allGames = mh.getGames();
-            //String idString2 = idText2.getText().trim();
             if (!mh.getGames().containsKey(Integer.parseInt(idText2.getText().trim()))) {
                 JOptionPane.showMessageDialog(null, "Game not found", "Output", JOptionPane.PLAIN_MESSAGE);
-                //System.out.println("Game not found");
             } else {
                 Game g = mh.accessGame(Integer.parseInt(idText2.getText().trim()));
                 String rankString = rankText2.getText().trim();
                 if (Integer.parseInt(rankString) < 1 || Integer.parseInt(rankString) > 8) {
-                    //String message = "Your number is out of range";
                     JOptionPane.showMessageDialog(null, "Out of range", "Output", JOptionPane.PLAIN_MESSAGE);
                     rankString = "";
                 }
                 g.updateRank(Integer.parseInt(rankString));
                 g.updateComp(compText2.getText().trim());
+
+                mhTxt.setText("");
+
+                for (Game game : mh.getGames().values()) {
+                    //info.add("ID: " + mh.getID(g) + " | Rank: " + g.getRank() + " | Comp: " + g.getComp());
+                    mhTxt.append("ID: " + mh.getID(game) + " | Rank: " + game.getRank() + " | Comp: " + game.getComp());
+                }
+                games.setText("");
             }
-            //HashMap<Integer, Game> updated = mh.getGames();
-            info = new ArrayList<>();
-            for (Game g : mh.getGames().values()) {
-                info.add("ID: " + mh.getID(g) + " | Rank: " + g.getRank() + " | Comp: " + g.getComp());
-            }
-            games.setText("<html><pre> Games: \n" + " " + info + "\n</pre></html>");
         } catch (NumberFormatException nfe) {
             System.out.println("NumberFormat Exception: invalid input string :(");
         } catch (IndexOutOfBoundsException e) {
@@ -440,36 +433,26 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // SOURCE: https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html
+    // https://docs.oracle.com/javase/7/docs/api/javax/swing/JTextArea.html#:~:text=A%20JTextArea%20is%20a%20multi,it%20can%20reasonably%20do%20so.
     // MODIFIES: this
     // EFFECTS: Constructs match history panel
     public void makeMatchHistoryPanel() {
         matchHistoryPanel = new JPanel();
         matchHistoryPanel.setLayout(new BoxLayout(matchHistoryPanel, BoxLayout.PAGE_AXIS));
-
-        JScrollPane scrollItem = new JScrollPane(games, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        //games = new JLabel("");
+        matchHistoryPanel.add(games);
+        mhTxt = new JTextArea("");
+        //matchHistoryPanel.add(textArea, BorderLayout.CENTER);
+//        JScrollPane scrollItem = new JScrollPane(games, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollItem = new JScrollPane(mhTxt, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//        JList list = new JList(info.toArray());
-//        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-//        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-//        list.setVisibleRowCount(-1);
-//        JScrollPane scrollItem  = new JScrollPane(list);
+
         JButton backToMain = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
         addButton(backToMain, matchHistoryPanel);
-        matchHistoryPanel.setPreferredSize(new Dimension(700, 700));
-
-//        BufferedImage tft = null;
-//        try {
-//            tft = ImageIO.read(new File("./data/tft.jpg"));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        JLabel label = new JLabel(new ImageIcon(tft));
-//        matchHistoryPanel.add(label);
-//        img.setIcon(new ImageIcon("./data/tft.png"));
-//        img.setMinimumSize(new Dimension(5, 5));
-//        menu.add(img);
+        matchHistoryPanel.setPreferredSize(new Dimension(1200, 700));
         matchHistoryPanel.add(scrollItem);
 
     }
@@ -501,20 +484,21 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads match history from file
+    // EFFECTS: loads match history from file and clear previous unsaved games
     public void loadMatchHistory() {
         try {
             mh = jsonReader.read();
 
             HashMap<Integer, Game> allGames = mh.getGames();
-            ArrayList<String> info = new ArrayList<>();
+            mhTxt.setText("");
             for (Game g : allGames.values()) {
                 int id = mh.getID(g);
                 int rank = g.getRank();
                 String comp = g.getComp();
-                info.add("ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
+                mhTxt.append("ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
             }
-            games.setText("Current games" + info);
+            games.setText(""); 
+
             System.out.println("Loaded match history from " + JSON_STORE);
 
         } catch (IOException e) {
