@@ -416,17 +416,17 @@ public class GUI extends JFrame implements ActionListener {
                 }
                 g.updateRank(Integer.parseInt(rankString));
                 g.updateComp(compText2.getText().trim());
-
                 mhTxt.setText("");
 
                 for (Game game : mh.getGames().values()) {
                     //info.add("ID: " + mh.getID(g) + " | Rank: " + g.getRank() + " | Comp: " + g.getComp());
-                    mhTxt.append("ID: " + mh.getID(game) + " | Rank: " + game.getRank() + " | Comp: " + game.getComp());
+                    mhTxt.append("ID:" + mh.getID(game) + " | Rank: " + game.getRank() + " | Comp: "
+                            + game.getComp() + "\n");
                 }
                 games.setText("");
             }
         } catch (NumberFormatException nfe) {
-            System.out.println("NumberFormat Exception: invalid input string :(");
+            //System.out.println("NumberFormat Exception: invalid input string :(");
         } catch (IndexOutOfBoundsException e) {
             games.setText("Initialize match history file first");
         }
@@ -497,7 +497,7 @@ public class GUI extends JFrame implements ActionListener {
                 String comp = g.getComp();
                 mhTxt.append("ID: " + id + " | Rank: " + rank + " | Comp: " + comp + "\n");
             }
-            games.setText(""); 
+            games.setText("");
 
             System.out.println("Loaded match history from " + JSON_STORE);
 
