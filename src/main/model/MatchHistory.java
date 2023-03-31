@@ -23,6 +23,7 @@ public class MatchHistory implements Writable {
     // EFFECTS: clears all games in match history
     public void clearHistory() {
         games.clear();
+        EventLog.getInstance().logEvent(new Event("cleared match history"));
     }
 
     // MODIFIES: this
@@ -30,16 +31,19 @@ public class MatchHistory implements Writable {
     public void addGame(Game g) {
         id++;
         games.put(id, g);
+        EventLog.getInstance().logEvent(new Event("added game to match history"));
     }
 
     // MODIFIES: this
     // EFFECTS: removes game from match history using given id
     public void removeGame(int id) {
         games.remove(id);
+        EventLog.getInstance().logEvent(new Event("removed game to match history"));
     }
 
     // EFFECTS: uses given id to access associated game in match history
     public Game accessGame(int id) {
+        //EventLog.getInstance().logEvent(new Event("accessed game from match history"));
         return games.get(id);
     }
 
