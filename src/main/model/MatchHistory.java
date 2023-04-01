@@ -30,15 +30,17 @@ public class MatchHistory implements Writable {
     // EFFECTS: adds given game to match history and increments associated id
     public void addGame(Game g) {
         id++;
-        games.put(id, g);
         EventLog.getInstance().logEvent(new Event("added game to match history"));
+        games.put(id, g);
+
     }
 
     // MODIFIES: this
     // EFFECTS: removes game from match history using given id
     public void removeGame(int id) {
-        games.remove(id);
         EventLog.getInstance().logEvent(new Event("removed game to match history"));
+        games.remove(id);
+
     }
 
     // EFFECTS: uses given id to access associated game in match history

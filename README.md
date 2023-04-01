@@ -37,6 +37,9 @@
 - You can save the state of my application by clicking 'save' in the main menu
 - You can reload the state of my application by clicking 'load' in the main menu
 
+# Phase 4: Task 2
+![img_1.png](img_1.png)
+![img.png](img.png)
 
 ## Projects Referenced ##
 - https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/

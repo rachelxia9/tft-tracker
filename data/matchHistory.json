@@ -1,4 +1,26 @@
-{"games": [{
-    "comp": "yone",
-    "rank": 2
-}]}
+{"games": [
+    {
+        "comp": "hype",
+        "rank": 8
+    },
+    {
+        "comp": "hhh",
+        "rank": 7
+    },
+    {
+        "comp": "hhh",
+        "rank": 7
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "2",
+        "rank": 1
+    },
+    {
+        "comp": "ditto",
+        "rank": 2
+    }
+]}

@@ -56,9 +56,10 @@ public class Game implements Writable {
     // EFFECTS: replaces current rank with new rank and updates winStatus based on new rank
 
     public void updateRank(int newRank) {
+        EventLog.getInstance().logEvent(new Event("Updated rank of game"));
         this.rank = newRank;
         this.winStatus = (rank <= 4);
-        EventLog.getInstance().logEvent(new Event("Updated rank of game"));
+
     }
 
     // REQUIRES: newComp has a non-zero length
@@ -66,8 +67,8 @@ public class Game implements Writable {
     // EFFECTS: replaces current name with new name of comp
 
     public void updateComp(String newComp) {
-        this.comp = newComp;
         EventLog.getInstance().logEvent(new Event("Updated name of comp"));
+        this.comp = newComp;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package persistence;
 
+import model.Event;
+import model.EventLog;
 import model.MatchHistory;
 import org.json.JSONObject;
 
@@ -29,6 +31,7 @@ public class JsonWriter {
     // MODIFIES: this
     // EFFECTS: writes JSON representation of match history to file
     public void write(MatchHistory mh) {
+        EventLog.getInstance().logEvent(new Event("saved data to file"));
         JSONObject json = mh.toJson();
         saveToFile(json.toString(INDENT));
     }

@@ -1,5 +1,7 @@
 package persistence;
 
+import model.Event;
+import model.EventLog;
 import model.Game;
 import model.MatchHistory;
 import org.json.*;
@@ -25,6 +27,7 @@ public class JsonReader {
     // EFFECTS: reads and returns match history from file
     // IOException thrown if there's an error reading the file's data
     public MatchHistory read() throws IOException {
+        EventLog.getInstance().logEvent(new Event("loaded data from file"));
         String jsonData = readFile(source);
         JSONObject jsonObj = new JSONObject(jsonData);
         return parseMH(jsonObj);
@@ -33,6 +36,7 @@ public class JsonReader {
     // Source: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo, readFile()
     // EFFECTS: reads and returns source as a string
     private String readFile(String source) throws IOException {
+        EventLog.getInstance().logEvent(new Event("loaded data from file"));
         StringBuilder builder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {

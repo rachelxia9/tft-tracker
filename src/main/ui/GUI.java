@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Game;
 import model.MatchHistory;
 import persistence.JsonReader;
@@ -12,11 +14,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 // GUI class represents GUI of TFT tracker application
 
@@ -34,13 +38,14 @@ public class GUI extends JFrame implements ActionListener {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    private JPanel menu;
+    private JInternalFrame menu;
     private JButton openButton;
     private JButton addButton;
     private JButton editButton;
     private JButton saveButton;
     private JButton loadButton;
     private JButton quitButton;
+    private JButton printButton;
     private JButton getStatsButton;
 
     private static final String OPEN_COMMAND = "open";
@@ -50,6 +55,7 @@ public class GUI extends JFrame implements ActionListener {
     private static final String EDIT_COMMAND = "edit";
     private static final String SAVE_COMMAND = "save";
     private static final String LOAD_COMMAND = "load";
+    private static final String PRINT_LOG = "print events log";
     private static final String RETURN_MAIN = "return to the main menu";
     private static final String ADD_GAME = "add game to history";
     private static final String EDIT_GAME = "edit game in history";
@@ -78,18 +84,20 @@ public class GUI extends JFrame implements ActionListener {
     private JButton backToMain2;
     private JLabel warning;
     private JTextArea mhTxt;
+    private JPanel logPanel;
+    private JTextArea logArea;
+    private JComboBox<String> printCombo;
+    private JPanel buttonPanel;
 
 
     // SOURCE: SPACE INVADERS BASE, ButtonDemo: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
     // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     // GUI constructor constructs a new JFrame with components of app - menu, input panels, add, and edit panels
     public GUI() {
-        super("TFT APP");
+        //super("TFT APP");
         mh = new MatchHistory();
-        centreOnScreen();
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(700, 700));
+        setPreferredSize(new Dimension(700, 500));
 
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -98,52 +106,22 @@ public class GUI extends JFrame implements ActionListener {
         makeMatchHistoryPanel();
         makeAddGamePanel();
         makeEditGamePanel();
-
-
-        JLabel startLabel = new JLabel("Welcome to the TFT tracker App!");
-//        JLabel startImg = new JLabel();
-//        startImg.setIcon(new ImageIcon("data/tft.jpeg"));
-//        startImg.setMinimumSize(new Dimension(700, 700));
-        menu.add(startLabel);
-//        menu.add(startImg);
+        //printLogPanel();
 
         initializeMenuButtons();
-        addButtons(openButton, addButton, editButton, saveButton, loadButton, quitButton);
+        addButtons(openButton, addButton, editButton, saveButton, loadButton);
         makeButtonsDoStuff();
 
         menu.setVisible(true);
 
     }
 
-    // SOURCE: SPACE INVADERS BASE
-    // Centres frame on desktop
-    // modifies: this
-    // effects:  location of frame is set so frame is centred on desktop
-    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ centreOnScreen() in AlarmControllerUI
-    private void centreOnScreen() {
-        Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
-    }
 
     // SOURCES: Background Image: https://stackoverflow.com/questions/1466240/how-to-set-an-image-as-a-background-for-frame-in-swing-gui-of-java
     // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ addButtonPanel()
     // EFFECTS: Make panel for main menu and set bg colour
     public void startMainMenu() {
-        menu = new JPanel();
-
-        final Image startImg;
-        try {
-            startImg = ImageIO.read(new File("data/tft.jpeg"));
-            setContentPane(new JPanel() {
-                @Override
-                public void paintComponent(Graphics g) {
-                    g.drawImage((startImg), 0, 0, null);
-                }
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        menu.setLocation(1000, 200);
+        menu = new JInternalFrame("tft tracker!!!", true, false, true, false);
         menu.setBackground(new Color(213, 184, 222));
         this.add(menu);
         games = new JLabel();
@@ -163,8 +141,9 @@ public class GUI extends JFrame implements ActionListener {
         saveButton.setIconTextGap(6);
         loadButton = new JButton(LOAD_COMMAND);
         loadButton.setIconTextGap(6);
-        quitButton = new JButton(QUIT_COMMAND);
-        quitButton.setIconTextGap(6);
+//        quitButton = new JButton(QUIT_COMMAND);
+//        quitButton.setIconTextGap(6);
+
     }
 
     // SOURCE: https://github.students.cs.ubc.ca/CPSC210/B02-SpaceInvadersBase/blob/a29bdc4920f7d5d1f3844454a1bc3c5a257cc56f/src/main/ca/ubc/cpsc210/spaceinvaders/ui/SpaceInvaders.java
@@ -194,13 +173,18 @@ public class GUI extends JFrame implements ActionListener {
 
     // EFFECTS: adds given buttons to menu panel
     public void addButtons(JButton openButton, JButton addButton, JButton editButton, JButton saveButton,
-                           JButton loadButton, JButton quitButton) {
-        addButton(openButton, menu);
-        addButton(addButton, menu);
-        addButton(editButton, menu);
-        addButton(saveButton, menu);
-        addButton(loadButton, menu);
-        addButton(quitButton, menu);
+                           JButton loadButton) {
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        addButton(openButton, buttonPanel);
+        addButton(addButton, buttonPanel);
+        addButton(editButton, buttonPanel);
+        addButton(saveButton, buttonPanel);
+        addButton(loadButton, buttonPanel);
+        //addButton(quitButton, buttonPanel);
+        buttonPanel.add(new JButton(new PrintLogAction()));
+        //buttonPanel.add(createPrintCombo());
+        menu.add(buttonPanel, BorderLayout.WEST);
 
 
     }
@@ -225,8 +209,8 @@ public class GUI extends JFrame implements ActionListener {
         loadButton.addActionListener(this);
         loadButton.setActionCommand(LOAD_COMMAND);
 
-        quitButton.addActionListener(this);
-        quitButton.setActionCommand(QUIT_COMMAND);
+//        quitButton.addActionListener(this);
+//        quitButton.setActionCommand(QUIT_COMMAND);
     }
 
     // SOURCES: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ButtonDemoProject/src/components/ButtonDemo.java
@@ -250,22 +234,62 @@ public class GUI extends JFrame implements ActionListener {
             saveMatchHistory();
         } else if (ae.getActionCommand().equals(LOAD_COMMAND)) {
             loadMatchHistory();
-        } else if (ae.getActionCommand().equals(QUIT_COMMAND)) {
-            System.exit(0);
-
         }
+//        } else if (ae.getActionCommand().equals(QUIT_COMMAND)) {
+//            System.exit(0);
+//        }
+    }
+
+//    public void printLogPanel() {
+//        logPanel = new JPanel();
+//        logPanel.setLayout(new BoxLayout(logPanel, BoxLayout.PAGE_AXIS));
+//
+//        logArea = new JTextArea("");
+//        EventLog.getInstance().events;
+//        logArea.setEditable(false);
+//        for (Event next : EventLog.getInstance()) {
+//            logArea.append(next.toString() + "\n");
+//        }
+//
+//        // printLog(EventLog.getInstance());
+//        JScrollPane scrollPane = new JScrollPane(logArea);
+//        ;
+//        logPanel.add(scrollPane);
+//        logPanel.setPreferredSize(new Dimension(600, 600));
+//
+//    }
+
+//    // https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/blob/047c12f321ec713fae1f1a5dfdb01688ea1df596/src/main/ca/ubc/cpsc210/alarm/ui/ScreenPrinter.java
+//    public void printLog(EventLog el) {
+//        for (Event next : el) {
+//            logArea.append(next.toString() + "\n");
+//        }
+//        repaint();
+//    }
+
+
+    // SOURCE: https://stackoverflow.com/questions/5600051/java-swing-how-to-toggle-panels-visibility
+    // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
+    // EFFECTS: Adds the panel for add game action to the screen and hides the other ones
+    public void displayLogPanel() {
+        add(logPanel);
+        matchHistoryPanel.setVisible(false);
+        menu.setVisible(false);
+        addGamePanel.setVisible(false);
+        //logPanel.setVisible(true);
+        editGamePanel.setVisible(false);
     }
 
     // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ addButtonPanel()
     // EFFECTS: Makes panel for user input related to add game function
     public void makeAddGamePanel() {
-        addGamePanel = new JPanel(new GridLayout(4, 2));
+        addGamePanel = new JPanel(new GridLayout(3, 2));
         JButton backToMain = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
+        addGamePanel.setSize(new Dimension(400, 400));
         //addMenuButton(backToMain, matchHistoryPanel);
         //addGamePanel.setPreferredSize(new Dimension(1000, 1000));
-
         makeInputPage();
         addGameLabels();
     }
@@ -279,6 +303,7 @@ public class GUI extends JFrame implements ActionListener {
         menu.setVisible(false);
         addGamePanel.setVisible(true);
         editGamePanel.setVisible(false);
+        //logPanel.setVisible(false);
     }
 
     // EFFECTS: constructs the fields for the add game panel
@@ -343,7 +368,8 @@ public class GUI extends JFrame implements ActionListener {
 
     // EFFECTS: Makes panel for user input related to edit game function
     public void makeEditGamePanel() {
-        editGamePanel = new JPanel(new GridLayout(5, 3));
+        editGamePanel = new JPanel(new GridLayout(4, 2));
+        editGamePanel.setSize(new Dimension(400, 400));
         JButton backToMain = new JButton(RETURN_MAIN);
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
@@ -362,6 +388,7 @@ public class GUI extends JFrame implements ActionListener {
         menu.setVisible(false);
         addGamePanel.setVisible(false);
         editGamePanel.setVisible(true);
+        //logPanel.setVisible(false);
     }
 
     // EFFECTS: constructs the fields for the add game panel
@@ -439,6 +466,7 @@ public class GUI extends JFrame implements ActionListener {
     public void makeMatchHistoryPanel() {
         matchHistoryPanel = new JPanel();
         matchHistoryPanel.setLayout(new BoxLayout(matchHistoryPanel, BoxLayout.PAGE_AXIS));
+        matchHistoryPanel.add(new JLabel(new ImageIcon("data/tft.jpeg")));
         //games = new JLabel("");
         matchHistoryPanel.add(games);
         mhTxt = new JTextArea("");
@@ -452,7 +480,7 @@ public class GUI extends JFrame implements ActionListener {
         backToMain.setActionCommand(RETURN_MAIN);
         backToMain.addActionListener(this);
         addButton(backToMain, matchHistoryPanel);
-        matchHistoryPanel.setPreferredSize(new Dimension(1200, 700));
+        matchHistoryPanel.setPreferredSize(new Dimension(300, 500));
         matchHistoryPanel.add(scrollItem);
 
     }
@@ -466,6 +494,7 @@ public class GUI extends JFrame implements ActionListener {
         menu.setVisible(false);
         addGamePanel.setVisible(false);
         editGamePanel.setVisible(false);
+        //logPanel.setVisible(false);
 
     }
 
@@ -519,7 +548,57 @@ public class GUI extends JFrame implements ActionListener {
         editGamePanel.setVisible(false);
     }
 
-    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  DesktopFocusAction
+    
+
+    /**
+     * Helper to create print options combo box
+     *
+     * @return the combo box
+     */
+//    private JComboBox<String> createPrintCombo() {
+//        printCombo = new JComboBox<String>();
+//        printCombo.addItem("print");
+//        return printCombo;
+//    }
+
+    /**
+     * Represents the action to be taken when the user wants to
+     * print the event log.
+     */
+    private class PrintLogAction extends AbstractAction {
+        PrintLogAction() {
+            super("Quit and Show Log");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            //String selected = (String) printCombo.getSelectedItem();
+            LogPrinter lp = new ScreenPrinter(GUI.this);
+            menu.add((ScreenPrinter) lp);
+
+            lp.printLog(EventLog.getInstance());
+            buttonPanel.setVisible(false);
+            
+        }
+    }
+
+    /**
+     * Represents the action to be taken when the user wants to
+     * clear the event log.
+     */
+//    private class ClearLogAction extends AbstractAction {
+//        ClearLogAction() {
+//            super("Clear log");
+//        }
+//
+//        @Override
+//        public void actionPerformed(ActionEvent evt) {
+//            EventLog.getInstance().clear();
+//        }
+//    }
+
+
+// SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  DesktopFocusAction
     private class DesktopFocusAction extends MouseAdapter {
 
         @Override
