@@ -31,7 +31,6 @@ public class GUI extends JFrame implements ActionListener {
     private static JInternalFrame controlPanel;
 
     private MatchHistory mh;
-    private Game game;
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 
@@ -355,7 +354,7 @@ public class GUI extends JFrame implements ActionListener {
             //String compString = compText.getText().trim();
             int rank = Integer.parseInt(rankString);
             String comp = compText.getText().trim();
-            game = new Game(rank, comp);
+            Game game = new Game(rank, comp);
             mh.addGame(game);
             mhTxt.append("ID: " + mh.getID(game) + " | Rank: " + rank + " | Comp: " + comp + "\n");
             games.setText("");
@@ -548,23 +547,10 @@ public class GUI extends JFrame implements ActionListener {
         editGamePanel.setVisible(false);
     }
 
-    
 
-    /**
-     * Helper to create print options combo box
-     *
-     * @return the combo box
-     */
-//    private JComboBox<String> createPrintCombo() {
-//        printCombo = new JComboBox<String>();
-//        printCombo.addItem("print");
-//        return printCombo;
-//    }
 
-    /**
-     * Represents the action to be taken when the user wants to
-     * print the event log.
-     */
+// SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  PrintLogAction
+    //EFFECTS: runs action to be taken when the user wants to print log
     private class PrintLogAction extends AbstractAction {
         PrintLogAction() {
             super("Quit and Show Log");

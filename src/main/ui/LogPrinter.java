@@ -1,15 +1,11 @@
 package ui;
 
 import model.EventLog;
+// SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  LogPrinter interface
 
-/**
- * Defines behaviours that event log printers must support.
- */
+// this interface defines the behaviour that log printers have to implement
+
 public interface LogPrinter {
-	/**
-	 * Prints the log
-	 * @param el  the event log to be printed
-	 *
-	 */
+    // EFFECTS: Prints event log
     void printLog(EventLog el);
 }

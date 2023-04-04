@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+// SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  EventLog class
 /**
- * Represents a log of alarm system events.
+ * Represents a log of tft app events
  * We use the Singleton Design Pattern to ensure that there is only
  * one EventLog in the system and that the system has global access
  * to the single instance of the EventLog.
@@ -25,13 +26,8 @@ public class EventLog implements Iterable<Event> {
         events = new ArrayList<Event>();
     }
 
-    /**
-     * Gets instance of EventLog - creates it
-     * if it doesn't already exist.
-     * (Singleton Design Pattern)
-     *
-     * @return instance of EventLog
-     */
+
+    // EFFECTS: gets instance or creates a new one
     public static EventLog getInstance() {
         if (theLog == null) {
             theLog = new EventLog();
@@ -40,18 +36,14 @@ public class EventLog implements Iterable<Event> {
         return theLog;
     }
 
-    /**
-     * Adds an event to the event log.
-     *
-     * @param e the event to be added
-     */
+
+    // EFFECTS: adds event to event log
     public void logEvent(Event e) {
         events.add(e);
     }
 
-    /**
-     * Clears the event log and logs the event.
-     */
+
+    // EFFECTS: clears log and logs event
     public void clear() {
         events.clear();
         logEvent(new Event("Event log cleared."));
