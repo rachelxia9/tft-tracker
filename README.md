@@ -41,6 +41,9 @@
 ![img_1.png](img_1.png)
 ![img.png](img.png)
 
+# Phase 4: Task 3 
+I would refactor my GUI class into multiple smaller classes to increase cohesion according to the single responsibility principle because putting everything related to GUI in one class made it quite cluttered and unclear. For example, I could probably separate different panels into separate classes. I could also refactor my GUI class and use more abstract classes/interfaces because there's a lot of repetitive 
+code between my GUI methods. One example of this is the methods I use for editing and adding games, there's a lot of similarity between the methods I used.  There's also quite a few long methods in my GUI class, so I could make more helper methods to improve cohesion. 
 ## Projects Referenced ##
 - https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/
 - https://github.students.cs.ubc.ca/CPSC210/B02-SpaceInvadersBase 
