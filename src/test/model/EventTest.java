@@ -27,7 +27,7 @@ public class EventTest {
 	@Test
 	public void testEvent() {
 		assertEquals("Updated rank of game", e.getDescription());
-       // assertEquals(d, e.getDate());
+        //assertEquals(d, e.getDate());
 	}
 
 	@Test

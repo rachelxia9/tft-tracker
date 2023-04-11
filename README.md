@@ -38,8 +38,9 @@
 - You can reload the state of my application by clicking 'load' in the main menu
 
 # Phase 4: Task 2
-![img_1.png](img_1.png)
+The first screenshot is from the event log printed in my GUI and the second one is the log printed to the console.
 ![img.png](img.png)
+![img_2.png](img_2.png)
 
 # Phase 4: Task 3 
 I would refactor my GUI class into multiple smaller classes to increase cohesion according to the single responsibility principle because putting everything related to GUI in one class made it quite cluttered and unclear. For example, I could probably separate different panels into separate classes. I could also refactor my GUI class and use more abstract classes/interfaces because there's a lot of repetitive 

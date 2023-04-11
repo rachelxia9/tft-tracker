@@ -35,6 +35,9 @@ public class ScreenPrinter extends JInternalFrame implements LogPrinter {
             logArea.setText(logArea.getText() + next.toString() + "\n\n");
         }
 
+        for (Event next : el) {
+            System.out.println(next.toString() + "\n");
+        }
         repaint();
     }
 

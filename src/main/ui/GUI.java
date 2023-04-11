@@ -93,10 +93,11 @@ public class GUI extends JFrame implements ActionListener {
     // SOURCE: https://stackoverflow.com/questions/15694107/how-to-layout-multiple-panels-on-a-jframe-java
     // GUI constructor constructs a new JFrame with components of app - menu, input panels, add, and edit panels
     public GUI() {
-        //super("TFT APP");
+        super("TFT APP");
         mh = new MatchHistory();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(700, 500));
+        //this.add(new JLabel(new ImageIcon("data/tft.jpeg")));
 
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -120,7 +121,7 @@ public class GUI extends JFrame implements ActionListener {
     // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/ addButtonPanel()
     // EFFECTS: Make panel for main menu and set bg colour
     public void startMainMenu() {
-        menu = new JInternalFrame("tft tracker!!!", true, false, true, false);
+        menu = new JInternalFrame("tft tracker!!!", true, false, false, false);
         menu.setBackground(new Color(213, 184, 222));
         this.add(menu);
         games = new JLabel();
@@ -233,6 +234,7 @@ public class GUI extends JFrame implements ActionListener {
             saveMatchHistory();
         } else if (ae.getActionCommand().equals(LOAD_COMMAND)) {
             loadMatchHistory();
+            //printLogConsole(EventLog.getInstance());
         }
 //        } else if (ae.getActionCommand().equals(QUIT_COMMAND)) {
 //            System.exit(0);
@@ -547,15 +549,26 @@ public class GUI extends JFrame implements ActionListener {
         editGamePanel.setVisible(false);
     }
 
+//    public void printLogConsole(EventLog el) {
+//        for (Event next : el) {
+//            System.out.println(next.toString() + "\n");
+//        }
+//    }
 
-
-// SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  PrintLogAction
+    // SOURCE: https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/  PrintLogAction
     //EFFECTS: runs action to be taken when the user wants to print log
     private class PrintLogAction extends AbstractAction {
         PrintLogAction() {
             super("Quit and Show Log");
         }
 
+//        public void printLogConsole(EventLog el) {
+//            for (Event next : el) {
+//                System.out.println(next.toString() + "\n");
+//            }
+//        }
+//
+//        printLogConsole()
         @Override
         public void actionPerformed(ActionEvent evt) {
             //String selected = (String) printCombo.getSelectedItem();
@@ -564,9 +577,10 @@ public class GUI extends JFrame implements ActionListener {
 
             lp.printLog(EventLog.getInstance());
             buttonPanel.setVisible(false);
-            
+
         }
     }
+
 
     /**
      * Represents the action to be taken when the user wants to
